@@ -31,6 +31,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Skip',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
             Expanded(
               child: PageView.builder(
                 controller: _controller,
@@ -52,7 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(
                           contents[i].title,
                           style: const TextStyle(
-                            fontSize: 30,
+                            fontSize: 26,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -86,27 +97,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               height: 40,
               width: double.infinity,
               margin: EdgeInsets.all(40),
-              child: TextButton(
-                child: Text(
-                    currentIndex == contents.length - 1 ? 'Continue' : 'Next'),
-                onPressed: () {
+              child: GestureDetector(
+                onTap: () {
                   if (currentIndex == contents.length - 1) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const Register()),
                     );
                   }
-                  _controller.nextPage(
-                    duration: Duration(milliseconds: 100),
-                    curve: Curves.bounceIn,
-                  );
                 },
-                style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Color(0xFFC53F3F),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    )),
+                child: SvgPicture.asset("assets/onboarding/move.svg"),
+                // child: TextButton(
+                //   child: Text(
+                //       currentIndex == contents.length - 1 ? 'Continue' : 'Next'),
+                //   onPressed: () {
+                //     if (currentIndex == contents.length - 1) {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(builder: (context) => const Register()),
+                //       );
+                //     }
+                //     _controller.nextPage(
+                //       duration: Duration(milliseconds: 100),
+                //       curve: Curves.bounceIn,
+                //     );
+                //   },
+                //   style: TextButton.styleFrom(
+                //       foregroundColor: Colors.white,
+                //       backgroundColor: Color(0xFFC53F3F),
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(20),
+                //       )),
+                // ),
               ),
             ),
           ],
@@ -118,7 +140,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Container buildDot(int index, BuildContext context) {
     return Container(
       height: 10,
-      width: currentIndex == index ? 25 : 10,
+      width: currentIndex == index ? 30 : 10,
       margin: EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
