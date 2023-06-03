@@ -10,8 +10,6 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFF2F0F0),
-    );
+    return Scaffold();
   }
 }

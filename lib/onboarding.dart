@@ -28,20 +28,33 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFF725E),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 40.0, top: 20),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Register()),
+                );
+              },
+              child: Text(
+                'Skip',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Skip',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
             Expanded(
               child: PageView.builder(
                 controller: _controller,
@@ -53,12 +66,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 itemCount: contents.length,
                 itemBuilder: (_, i) {
                   return Padding(
-                    padding: const EdgeInsets.all(40),
+                    padding: const EdgeInsets.all(0),
                     child: Column(
                       children: [
                         Image.asset(
                           contents[i].image,
-                          height: 300,
+                          height: 380,
+                          width: 380,
+                        ),
+                        SizedBox(
+                          height: 16,
                         ),
                         Text(
                           contents[i].title,
@@ -70,12 +87,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Text(
-                          contents[i].description,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          width: 300,
+                          child: Text(
+                            contents[i].description,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ],
@@ -84,20 +104,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 },
               ),
             ),
+            // Container(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: List.generate(
+            //       contents.length,
+            //       (index) => buildDot(index, context),
+            //     ),
+            //   ),
+            // ),
+            SizedBox(),
             Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  contents.length,
-                  (index) => buildDot(index, context),
-                ),
-              ),
-            ),
-            Container(
-              height: 40,
-              width: double.infinity,
-              margin: EdgeInsets.all(40),
               child: GestureDetector(
+                child: SvgPicture.asset('assets/onboarding/move.svg'),
                 onTap: () {
                   if (currentIndex == contents.length - 1) {
                     Navigator.push(
@@ -105,31 +124,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       MaterialPageRoute(builder: (context) => const Register()),
                     );
                   }
+                  _controller.nextPage(
+                    duration: Duration(milliseconds: 100),
+                    curve: Curves.bounceIn,
+                  );
                 },
-                child: SvgPicture.asset("assets/onboarding/move.svg"),
-                // child: TextButton(
-                //   child: Text(
-                //       currentIndex == contents.length - 1 ? 'Continue' : 'Next'),
-                //   onPressed: () {
-                //     if (currentIndex == contents.length - 1) {
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(builder: (context) => const Register()),
-                //       );
-                //     }
-                //     _controller.nextPage(
-                //       duration: Duration(milliseconds: 100),
-                //       curve: Curves.bounceIn,
-                //     );
-                //   },
-                //   style: TextButton.styleFrom(
-                //       foregroundColor: Colors.white,
-                //       backgroundColor: Color(0xFFC53F3F),
-                //       shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(20),
-                //       )),
-                // ),
               ),
+            ),
+            SizedBox(
+              height: 40,
             ),
           ],
         ),
