@@ -1,6 +1,7 @@
 import 'package:buzz/content_model.dart';
 import 'package:buzz/register.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFF725E),
@@ -42,7 +44,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   MaterialPageRoute(builder: (context) => const Register()),
                 );
               },
-              child: Text(
+              child: const Text(
                 'Skip',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -74,7 +76,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           height: 380,
                           width: 380,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         Text(
@@ -87,12 +89,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Container(
+                        SizedBox(
                           width: 300,
                           child: Text(
                             contents[i].description,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                             ),
@@ -113,25 +115,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             //     ),
             //   ),
             // ),
-            SizedBox(),
-            Container(
-              child: GestureDetector(
-                child: SvgPicture.asset('assets/onboarding/move.svg'),
-                onTap: () {
-                  if (currentIndex == contents.length - 1) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Register()),
-                    );
-                  }
-                  _controller.nextPage(
-                    duration: Duration(milliseconds: 100),
-                    curve: Curves.bounceIn,
+            GestureDetector(
+              child: SvgPicture.asset('assets/onboarding/move.svg'),
+              onTap: () {
+                if (currentIndex == contents.length - 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Register()),
                   );
-                },
-              ),
+                }
+                _controller.nextPage(
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.bounceIn,
+                );
+              },
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
           ],
@@ -144,7 +143,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Container(
       height: 10,
       width: currentIndex == index ? 30 : 10,
-      margin: EdgeInsets.only(right: 5),
+      margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.white,
