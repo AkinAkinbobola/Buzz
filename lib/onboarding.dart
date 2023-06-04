@@ -1,5 +1,6 @@
+import 'package:buzz/constant.dart';
 import 'package:buzz/content_model.dart';
-import 'package:buzz/register.dart';
+import 'package:buzz/login_register.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,7 +30,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFF725E),
+      backgroundColor: splashOrange,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black,
@@ -41,7 +42,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Register()),
+                  MaterialPageRoute(builder: (context) =>  LoginRegisterScreen()),
                 );
               },
               child: const Text(
@@ -106,22 +107,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 },
               ),
             ),
-            // Container(
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: List.generate(
-            //       contents.length,
-            //       (index) => buildDot(index, context),
-            //     ),
-            //   ),
-            // ),
             GestureDetector(
               child: SvgPicture.asset('assets/onboarding/move.svg'),
               onTap: () {
                 if (currentIndex == contents.length - 1) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const Register()),
+                    MaterialPageRoute(builder: (context) => LoginRegisterScreen()),
                   );
                 }
                 _controller.nextPage(
@@ -135,18 +127,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Container buildDot(int index, BuildContext context) {
-    return Container(
-      height: 10,
-      width: currentIndex == index ? 30 : 10,
-      margin: const EdgeInsets.only(right: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
       ),
     );
   }

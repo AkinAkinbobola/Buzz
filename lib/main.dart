@@ -1,4 +1,6 @@
+import 'package:buzz/constant.dart';
 import 'package:buzz/onboarding.dart';
+import 'package:buzz/login_register.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,9 +17,26 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnboardingScreen(),
+      theme: ThemeData(
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(24),
+            borderSide: BorderSide.none,
+          ),
+          floatingLabelStyle: const TextStyle(
+            color: darkOrange,
+          ),
+        ),
+      ),
+      home: LoginRegisterScreen(),
     );
   }
 }
