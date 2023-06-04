@@ -163,25 +163,66 @@ class RegisterForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Email'),
-          ),
-          SizedBox(height: getProportionateScreenHeight(25)),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Password'),
-            obscureText: true,
-          ),
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () {
-              // Perform registration
-            },
-            child: const Text('Register'),
-          ),
-        ],
+      padding:
+          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(25)),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: getProportionateScreenHeight(18)),
+            const Text(
+              "Log In to your account",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(12)),
+            Row(
+              children: [
+                Image.asset('assets/login_register/google.png'),
+                SizedBox(width: getProportionateScreenWidth(24)),
+                Image.asset('assets/login_register/apple.png'),
+                SizedBox(width: getProportionateScreenWidth(24)),
+                Image.asset('assets/login_register/microsoft.png'),
+              ],
+            ),
+            SizedBox(height: getProportionateScreenHeight(30)),
+            const Text(
+              'Or register with your email',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Email',
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(25)),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Password',
+              ),
+              obscureText: true,
+            ),
+            SizedBox(height: getProportionateScreenHeight(25)),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Confirm Password',
+              ),
+              obscureText: true,
+            ),
+            SizedBox(height: getProportionateScreenHeight(48)),
+            FormButton(
+              text: "Register",
+              press: () {},
+            ),
+          ],
+        ),
       ),
     );
   }
