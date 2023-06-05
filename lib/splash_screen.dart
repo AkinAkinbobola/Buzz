@@ -1,8 +1,10 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:buzz/onboarding.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,9 +16,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: 4)).then((value) {
+    Future.delayed(const Duration(seconds: 4)).then((value) {
       Navigator.of(context).pushReplacement(
           CupertinoPageRoute(builder: (ctx) => const OnboardingScreen()));
     });
@@ -25,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFF725E),
+      backgroundColor: const Color(0xFFFF725E),
       body: SizedBox(
         width: double.infinity,
         child: Column(
@@ -39,13 +40,17 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 150,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 300,
             ),
-            SpinKitSquareCircle(
-              color: Colors.white,
-              size: 50.0,
-            ),
+            Text(
+              'Buzz',
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w900,
+                fontSize: 40,
+              ),
+            )
+
           ],
         ),
       ),

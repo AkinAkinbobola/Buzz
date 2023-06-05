@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, unused_import, depend_on_referenced_packages
+
 import 'package:buzz/constant.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'form_button.dart';
 
 class LoginRegisterScreen extends StatefulWidget {
+  const LoginRegisterScreen({super.key});
+
   @override
   _LoginRegisterScreenState createState() => _LoginRegisterScreenState();
 }
@@ -66,11 +70,11 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
             labelColor: black,
             controller: _tabController,
             indicatorColor: Colors.black,
-            tabs: [
-              const Tab(
+            tabs: const [
+              Tab(
                 text: 'Log In',
               ),
-              const Tab(
+              Tab(
                 text: 'Register',
               ),
             ],
@@ -78,7 +82,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [
+              children: const [
                 LoginForm(),
                 RegisterForm(),
               ],
@@ -91,6 +95,8 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
 }
 
 class LoginForm extends StatelessWidget {
+  const LoginForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -170,6 +176,8 @@ class LoginForm extends StatelessWidget {
 }
 
 class RegisterForm extends StatelessWidget {
+  const RegisterForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -204,7 +212,7 @@ class RegisterForm extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF000000),
+                color: const Color(0xFF000000),
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(10)),

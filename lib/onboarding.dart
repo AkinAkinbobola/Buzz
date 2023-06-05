@@ -47,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => LoginRegisterScreen()),
+                      builder: (context) => const LoginRegisterScreen()),
                 );
               },
               child: Text(
@@ -97,7 +97,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           height: getProportionateScreenHeight(20),
                         ),
                         SizedBox(
-                          width: getProportionateScreenWidth(250),
+                          width: getProportionateScreenWidth(280),
                           child: Text(
                             contents[i].description,
                             textAlign: TextAlign.center,
@@ -120,7 +120,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => LoginRegisterScreen()),
+                        builder: (context) => const LoginRegisterScreen()),
                   );
                 }
                 _controller.nextPage(

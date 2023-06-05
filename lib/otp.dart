@@ -43,9 +43,9 @@ class _OTPState extends State<OTP> {
               ],
             ),
           ),
-          Text('Enter 6-digit verification code sent to email@gmail.com'),
+          const Text('Enter 6-digit verification code sent to email@gmail.com'),
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'OTP',
               labelStyle: TextStyle(color: darkOrange),
               enabledBorder: UnderlineInputBorder(
@@ -77,14 +77,18 @@ class _OTPState extends State<OTP> {
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
                   ),
-                )
+                ),
               ],
             ),
           ),
-          
+          const SizedBox(
+            child: Pinput(
+              length: 6,
+              
+            ),
+          ),
         ],
       ),
     );
   }
 }
-

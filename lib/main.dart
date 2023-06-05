@@ -1,9 +1,13 @@
+// ignore_for_file: unused_import
+
 import 'package:buzz/constant.dart';
 import 'package:buzz/onboarding.dart';
 import 'package:buzz/login_register.dart';
 import 'package:buzz/otp.dart';
 import 'package:buzz/splash_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'buzz.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,7 +42,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: OTP(),
+      home: const SplashScreen(),
     );
   }
 }
