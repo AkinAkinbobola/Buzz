@@ -1,6 +1,8 @@
 import 'package:buzz/constant.dart';
 import 'package:buzz/onboarding.dart';
 import 'package:buzz/login_register.dart';
+import 'package:buzz/otp.dart';
+import 'package:buzz/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -36,7 +38,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: LoginRegisterScreen(),
+      home: OTP(),
     );
   }
 }

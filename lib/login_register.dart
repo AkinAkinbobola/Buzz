@@ -2,6 +2,7 @@ import 'package:buzz/constant.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'form_button.dart';
 
@@ -35,14 +36,14 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: getProportionateScreenHeight(185),
+            height: getProportionateScreenHeight(155),
           ),
           Padding(
             padding: EdgeInsets.only(left: getProportionateScreenWidth(56)),
             child: RichText(
-              text: const TextSpan(
+              text: TextSpan(
                 text: "Welcome To ",
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   color: black,
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
@@ -50,7 +51,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
                 children: [
                   TextSpan(
                     text: "Buzz!",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       color: darkOrange,
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
@@ -64,6 +65,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
           TabBar(
             labelColor: black,
             controller: _tabController,
+            indicatorColor: Colors.black,
             tabs: [
               const Tab(
                 text: 'Log In',
@@ -100,11 +102,11 @@ class LoginForm extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: getProportionateScreenHeight(18)),
-            const Text(
+            Text(
               "Log In to your account",
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 20,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(12)),
@@ -118,23 +120,31 @@ class LoginForm extends StatelessWidget {
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(48)),
-            const Text(
+            Text(
               'Or log in with your email',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Email',
+                labelStyle: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(25)),
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Password',
+                labelStyle: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
               ),
               obscureText: true,
             ),
@@ -171,11 +181,11 @@ class RegisterForm extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: getProportionateScreenHeight(18)),
-            const Text(
-              "Log In to your account",
-              style: TextStyle(
+            Text(
+              "Create an account",
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w600,
                 fontSize: 20,
-                fontWeight: FontWeight.w700,
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(12)),
@@ -188,33 +198,45 @@ class RegisterForm extends StatelessWidget {
                 Image.asset('assets/login_register/microsoft.png'),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(30)),
-            const Text(
+            SizedBox(height: getProportionateScreenHeight(48)),
+            Text(
               'Or register with your email',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
+                color: Color(0xFF000000),
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Email',
+                labelStyle: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(25)),
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Password',
+                labelStyle: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
               ),
               obscureText: true,
             ),
             SizedBox(height: getProportionateScreenHeight(25)),
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Confirm Password',
+                labelStyle: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
               ),
-              obscureText: true,
             ),
             SizedBox(height: getProportionateScreenHeight(48)),
             FormButton(

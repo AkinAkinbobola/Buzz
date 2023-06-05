@@ -1,9 +1,11 @@
 import 'package:buzz/constant.dart';
 import 'package:buzz/content_model.dart';
 import 'package:buzz/login_register.dart';
+import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -29,6 +31,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Scaffold(
       backgroundColor: splashOrange,
       appBar: AppBar(
@@ -42,13 +46,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  LoginRegisterScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => LoginRegisterScreen()),
                 );
               },
-              child: const Text(
+              child: Text(
                 'Skip',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
                 ),
               ),
             ),
@@ -74,30 +80,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       children: [
                         Image.asset(
                           contents[i].image,
-                          height: 380,
-                          width: 380,
+                          height: getProportionateScreenHeight(380),
+                          width: getProportionateScreenWidth(380),
                         ),
-                        const SizedBox(
-                          height: 16,
+                        SizedBox(
+                          height: getProportionateScreenHeight(30),
                         ),
                         Text(
                           contents[i].title,
-                          style: const TextStyle(
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w800,
                             fontSize: 26,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
                         ),
                         SizedBox(
-                          width: 300,
+                          width: getProportionateScreenWidth(250),
                           child: Text(
                             contents[i].description,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 20,
+                            style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w500,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -113,7 +119,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 if (currentIndex == contents.length - 1) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginRegisterScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => LoginRegisterScreen()),
                   );
                 }
                 _controller.nextPage(
