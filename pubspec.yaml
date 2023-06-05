@@ -41,6 +41,7 @@ dependencies:
   hooks_riverpod: ^2.3.6
   avatar_glow: ^2.0.2
   acr_cloud_sdk: ^2.0.2
+  dio: ^5.1.2
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,8 @@ flutter:
     - assets/onboarding/
     - assets/splash_screen/
     - assets/login_register/
+    - assets/buzz/
+
 
 
 
