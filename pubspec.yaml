@@ -42,6 +42,7 @@ dependencies:
   avatar_glow: ^2.0.2
   acr_cloud_sdk: ^2.0.2
   dio: ^5.1.2
+  music_visualizer: ^1.0.4
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,7 @@ flutter:
     - assets/splash_screen/
     - assets/login_register/
     - assets/buzz/
+
 
 
 

@@ -7,18 +7,48 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:acr_cloud_sdk/acr_cloud_sdk.dart';
+import 'package:music_visualizer/music_visualizer.dart';
 
 class Buzz extends StatefulWidget {
-  const Buzz({super.key});
+  const Buzz({Key? key}) : super(key: key);
 
   @override
   State<Buzz> createState() => _BuzzState();
 }
 
 class _BuzzState extends State<Buzz> {
+  late AcrCloudSdk acrCloudSdk;
+  bool onClick = false;
+  final List<Color> colors = [
+    Colors.black!,
+    Colors.black!,
+    Colors.black!,
+    Colors.black!,
+  ];
+
+  final List<int> duration = [900, 700, 600, 800, 500];
+
   @override
   void initState() {
     super.initState();
+    initializeAcrCloud();
+  }
+
+  void initializeAcrCloud() {
+    acrCloudSdk = AcrCloudSdk();
+    acrCloudSdk.init(
+      host: 'identify-us-west-2.acrcloud.com',
+      accessKey: 'dccaf0c06d15eb512eab05a5f9f5420a',
+      accessSecret: 'cEXwp8kHkjROtLkKWAmDYmJMJgARP9FCylZMOFy4',
+      setLog: true,
+    );
+    acrCloudSdk.songModelStream.listen(searchSong);
+  }
+
+  void searchSong(SongModel song) async {
+    // Handle the recognized song
+    print(song);
   }
 
   @override
@@ -31,7 +61,7 @@ class _BuzzState extends State<Buzz> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: getProportionateScreenHeight(171),
+            height: getProportionateScreenHeight(100),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -40,11 +70,21 @@ class _BuzzState extends State<Buzz> {
               SizedBox(
                 width: getProportionateScreenWidth(10),
               ),
-              Text(
-                'Tap to Buzz',
-                style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w800, fontSize: 18),
-              ),
+              onClick == false
+                  ? Text(
+                      'Tap to Buzz',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                      ),
+                    )
+                  : Text(
+                      'Buzzing',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                      ),
+                    ),
             ],
           ),
           SizedBox(
@@ -52,18 +92,20 @@ class _BuzzState extends State<Buzz> {
           ),
           AvatarGlow(
             endRadius: 200,
-            animate: true,
+            animate: onClick,
             child: GestureDetector(
-              onTap: (){},
+              onTap: startRecognition,
               child: Material(
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 elevation: 8,
                 child: Container(
-                  padding: EdgeInsets.all(40),
+                  padding: const EdgeInsets.all(40),
                   height: getProportionateScreenHeight(210),
                   width: getProportionateScreenWidth(210),
-                  decoration:
-                      BoxDecoration(shape: BoxShape.circle, color: darkOrange),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: darkOrange,
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15.0),
                     child: SvgPicture.asset(
@@ -75,9 +117,58 @@ class _BuzzState extends State<Buzz> {
                 ),
               ),
             ),
-          )
+          ),
+          onClick == true
+              ? SizedBox(
+                  width: getProportionateScreenWidth(200),
+                  height: getProportionateScreenHeight(60),
+                  child: MusicVisualizer(
+                    colors: colors,
+                    duration: duration,
+                    barCount: 30,
+                  ),
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                ),
+          SizedBox(
+            height: getProportionateScreenHeight(15),
+          ),
+          if (onClick == true)
+            Column(
+              children: [
+                Text(
+                  'Listening for music',
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  'Make sure your device can hear the song clearly',
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              ],
+            ),
         ],
       ),
     );
+  }
+
+  void startRecognition() async {
+    try {
+      setState(() {
+        onClick = !onClick;
+      });
+      // await acrCloudSdk.start();
+      // print('recording');
+      // Recognition started successfully
+    } catch (e) {
+      // Handle error
+    }
   }
 }
