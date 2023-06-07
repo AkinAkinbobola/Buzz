@@ -17,77 +17,127 @@ class _OTPState extends State<OTP> {
     SizeConfig().init(context);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        elevation: 0,
+      ),
       backgroundColor: backgroundCream,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             height: getProportionateScreenHeight(185),
           ),
-          RichText(
-            text: const TextSpan(
-              text: "Welcome To ",
-              style: TextStyle(
-                color: black,
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-              ),
-              children: [
-                TextSpan(
-                  text: "Buzz!",
-                  style: TextStyle(
-                    color: darkOrange,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                  ),
-                )
-              ],
+          Padding(
+            padding: EdgeInsets.only(
+              left: getProportionateScreenWidth(60),
             ),
-          ),
-          const Text('Enter 6-digit verification code sent to email@gmail.com'),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'OTP',
-              labelStyle: TextStyle(color: darkOrange),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: darkOrange),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: darkOrange),
-              ),
-            ),
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(11)
-            ],
-            keyboardType: TextInputType.number,
-          ),
-          RichText(
-            text: const TextSpan(
-              text: "Didn't receive a verification code? ",
-              style: TextStyle(
-                color: black,
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-              ),
-              children: [
-                TextSpan(
-                  text: "Send again",
-                  style: TextStyle(
-                    color: darkOrange,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                  ),
+            child: RichText(
+              text: const TextSpan(
+                text: "Welcome To ",
+                style: TextStyle(
+                  color: black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
                 ),
-              ],
+                children: [
+                  TextSpan(
+                    text: "Buzz!",
+                    style: TextStyle(
+                      color: darkOrange,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          const SizedBox(
-            child: Pinput(
-              length: 6,
-              
+          SizedBox(
+            height: getProportionateScreenHeight(40),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              left: getProportionateScreenWidth(35),
+            ),
+            child: Container(
+              width: getProportionateScreenWidth(270),
+              child: const Text(
+                  'Enter 6-digit verification code sent to email@gmail.com'),
             ),
           ),
+          SizedBox(
+            height: getProportionateScreenHeight(20),
+          ),
+          Center(child: OTP_input()),
+          SizedBox(
+            height: getProportionateScreenHeight(50),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              left: getProportionateScreenWidth(45),
+            ),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OTP()),
+                );
+              },
+              child: RichText(
+                text: const TextSpan(
+                  text: "Didn't receive a verification code? ",
+                  style: TextStyle(
+                    color: black,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Send again",
+                      style: TextStyle(
+                        color: darkOrange,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: getProportionateScreenHeight(40)),
         ],
+      ),
+    );
+  }
+}
+
+class OTP_input extends StatelessWidget {
+  const OTP_input({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Pinput(
+      length: 6,
+      defaultPinTheme: PinTheme(
+        width: getProportionateScreenWidth(40),
+        height: getProportionateScreenHeight(40),
+        textStyle: TextStyle(fontSize: 20),
+        margin:
+            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5)),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.black.withOpacity(0.5),
+              width: 1.0,
+            ),
+          ),
+        ),
       ),
     );
   }

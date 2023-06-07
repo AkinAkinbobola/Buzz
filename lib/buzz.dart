@@ -21,10 +21,10 @@ class _BuzzState extends State<Buzz> {
   late AcrCloudSdk acrCloudSdk;
   bool onClick = false;
   final List<Color> colors = [
-    Colors.black!,
-    Colors.black!,
-    Colors.black!,
-    Colors.black!,
+    Colors.black,
+    Colors.black,
+    Colors.black,
+    Colors.black,
   ];
 
   final List<int> duration = [900, 700, 600, 800, 500];
@@ -79,7 +79,7 @@ class _BuzzState extends State<Buzz> {
                       ),
                     )
                   : Text(
-                      'Buzzing',
+                      'Buzzing...',
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w800,
                         fontSize: 18,
@@ -125,7 +125,7 @@ class _BuzzState extends State<Buzz> {
                   child: MusicVisualizer(
                     colors: colors,
                     duration: duration,
-                    barCount: 30,
+                    barCount: 15,
                   ),
                 )
               : const SizedBox(
@@ -164,8 +164,8 @@ class _BuzzState extends State<Buzz> {
       setState(() {
         onClick = !onClick;
       });
-      // await acrCloudSdk.start();
-      // print('recording');
+      await acrCloudSdk.start();
+      print('recording');
       // Recognition started successfully
     } catch (e) {
       // Handle error

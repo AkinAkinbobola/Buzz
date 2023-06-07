@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, unused_import, depend_on_referenced_packages
 
+import 'package:buzz/buzz.dart';
 import 'package:buzz/constant.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'form_button.dart';
+import 'otp.dart';
 
 class LoginRegisterScreen extends StatefulWidget {
   const LoginRegisterScreen({super.key});
@@ -155,18 +157,29 @@ class LoginForm extends StatelessWidget {
               obscureText: true,
             ),
             SizedBox(height: getProportionateScreenHeight(33)),
-            const Text(
-              'Forgot your password?',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 13,
-                color: darkOrange,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OTP()),
+                );
+              },
+              child: const Text(
+                'Forgot your password?',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13,
+                  color: darkOrange,
+                ),
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(48)),
             FormButton(
               text: "Log In",
-              press: () {},
+              press: () {Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Buzz()),
+                );},
             ),
           ],
         ),
@@ -249,7 +262,12 @@ class RegisterForm extends StatelessWidget {
             SizedBox(height: getProportionateScreenHeight(48)),
             FormButton(
               text: "Register",
-              press: () {},
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Buzz()),
+                );
+              },
             ),
           ],
         ),
