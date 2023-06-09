@@ -45,8 +45,8 @@ class _BuzzState extends State<Buzz> {
     acrCloudSdk = AcrCloudSdk();
     acrCloudSdk.init(
       host: 'identify-us-west-2.acrcloud.com',
-      accessKey: 'dccaf0c06d15eb512eab05a5f9f5420a',
-      accessSecret: 'cEXwp8kHkjROtLkKWAmDYmJMJgARP9FCylZMOFy4',
+      accessKey: '32e8b4a17a8e54e6dae651348bca2759',
+      accessSecret: 'roU98fiFDzlWEWntK4LR9ccmM3QAAf6ywoqu9J6D',
       setLog: true,
     );
     acrCloudSdk.songModelStream.listen(searchSong);
@@ -116,11 +116,11 @@ class _BuzzState extends State<Buzz> {
               ? SizedBox(
                   width: getProportionateScreenWidth(200),
                   height: getProportionateScreenHeight(60),
-                  child: MusicVisualizer(
-                    colors: colors,
-                    duration: duration,
-                    barCount: 15,
-                  ),
+                  // child: MusicVisualizer(
+                  //   colors: colors,
+                  //   duration: duration,
+                  //   barCount: 15,
+                  // ),
                 )
               : const SizedBox(
                   height: 0,
@@ -158,7 +158,7 @@ class _BuzzState extends State<Buzz> {
       setState(() {
         onClick = !onClick;
       });
-      // await acrCloudSdk.start();
+      await acrCloudSdk.start();
       print('recording');
     } catch (e) {
       print(e.toString());

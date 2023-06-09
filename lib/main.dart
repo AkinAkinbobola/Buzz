@@ -8,7 +8,6 @@ import 'package:buzz/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'buzz.dart';
-import 'copied_code_test.dart';
 
 void main() {
   runApp(const MyApp());
