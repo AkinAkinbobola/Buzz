@@ -1,7 +1,8 @@
+// ignore_for_file: camel_case_types
+
 import 'package:buzz/constant.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
 
 class OTP extends StatefulWidget {
@@ -61,7 +62,7 @@ class _OTPState extends State<OTP> {
             padding: EdgeInsets.only(
               left: getProportionateScreenWidth(35),
             ),
-            child: Container(
+            child: SizedBox(
               width: getProportionateScreenWidth(270),
               child: const Text(
                   'Enter 6-digit verification code sent to email@gmail.com'),
@@ -70,7 +71,7 @@ class _OTPState extends State<OTP> {
           SizedBox(
             height: getProportionateScreenHeight(20),
           ),
-          Center(child: OTP_input()),
+          const Center(child: OTP_input()),
           SizedBox(
             height: getProportionateScreenHeight(50),
           ),
@@ -126,7 +127,7 @@ class OTP_input extends StatelessWidget {
       defaultPinTheme: PinTheme(
         width: getProportionateScreenWidth(40),
         height: getProportionateScreenHeight(40),
-        textStyle: TextStyle(fontSize: 20),
+        textStyle: const TextStyle(fontSize: 20),
         margin:
             EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5)),
         decoration: BoxDecoration(

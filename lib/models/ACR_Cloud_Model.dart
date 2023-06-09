@@ -2,6 +2,8 @@
 //
 //     final acrCloudModel = acrCloudModelFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 AcrCloudModel acrCloudModelFromJson(String str) => AcrCloudModel.fromJson(json.decode(str));

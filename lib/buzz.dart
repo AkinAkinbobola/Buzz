@@ -1,8 +1,9 @@
-// ignore_for_file: unused_import, depend_on_referenced_packages
+// ignore_for_file: unused_import, depend_on_referenced_packages, avoid_print
 
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:buzz/constant.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class Buzz extends StatefulWidget {
 }
 
 class _BuzzState extends State<Buzz> {
+
   late AcrCloudSdk acrCloudSdk;
   bool onClick = false;
   final List<Color> colors = [
@@ -127,8 +129,8 @@ class _BuzzState extends State<Buzz> {
           SizedBox(
             height: getProportionateScreenHeight(15),
           ),
-          if (onClick == true)
-            Column(
+          
+            onClick == true ? Column(
               children: [
                 Text(
                   'Listening for music',
@@ -145,7 +147,7 @@ class _BuzzState extends State<Buzz> {
                   ),
                 ),
               ],
-            ),
+            ): const SizedBox(height: 0, width: 0,),
         ],
       ),
     );
@@ -156,7 +158,7 @@ class _BuzzState extends State<Buzz> {
       setState(() {
         onClick = !onClick;
       });
-      await acrCloudSdk.start();
+      // await acrCloudSdk.start();
       print('recording');
     } catch (e) {
       print(e.toString());

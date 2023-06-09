@@ -8,6 +8,7 @@ import 'package:buzz/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'buzz.dart';
+import 'copied_code_test.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,7 +43,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: const Buzz(),
+      home: const SplashScreen(),
     );
   }
 }
