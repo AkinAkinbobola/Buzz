@@ -5,7 +5,6 @@ import 'package:buzz/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -28,11 +27,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFF725E),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 154,
             ),
             SvgPicture.asset(
@@ -40,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 210,
               width: 210,
             ),
-            SizedBox(
+            const SizedBox(
               height: 106,
             ),
             SvgPicture.asset('assets/splash_screen/buzz_text.svg')

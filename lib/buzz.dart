@@ -102,22 +102,10 @@ class _BuzzState extends State<Buzz> {
               child: Material(
                 shape: const CircleBorder(),
                 elevation: 8,
-                child: Container(
-                  padding: const EdgeInsets.all(40),
+                child: SvgPicture.asset(
+                  'assets/splash_screen/buzz_logo.svg',
                   height: getProportionateScreenHeight(210),
                   width: getProportionateScreenWidth(210),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: darkOrange,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: SvgPicture.asset(
-                      'assets/splash_screen/Logo.svg',
-                      height: getProportionateScreenHeight(150),
-                      width: getProportionateScreenWidth(150),
-                    ),
-                  ),
                 ),
               ),
             ),
@@ -126,11 +114,11 @@ class _BuzzState extends State<Buzz> {
               ? SizedBox(
                   width: getProportionateScreenWidth(200),
                   height: getProportionateScreenHeight(60),
-                  // child: MusicVisualizer(
-                  //   colors: colors,
-                  //   duration: duration,
-                  //   barCount: 15,
-                  // ),
+                  child: MusicVisualizer(
+                    colors: colors,
+                    duration: duration,
+                    barCount: 15,
+                  ),
                 )
               : const SizedBox(
                   height: 0,
@@ -155,7 +143,7 @@ class _BuzzState extends State<Buzz> {
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
-                )
+                ),
               ],
             ),
         ],
@@ -165,31 +153,24 @@ class _BuzzState extends State<Buzz> {
 
   void startRecognition() async {
     try {
-
       setState(() {
         onClick = !onClick;
       });
       await acrCloudSdk.start();
       print('recording');
-      // Recognition started successfully
     } catch (e) {
       print(e.toString());
-      // Handle error
     }
   }
 
   void stopRecognition() async {
     try {
-      print('recording\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
-
       setState(() {
         onClick = !onClick;
       });
       await acrCloudSdk.stop();
-      // Recognition started successfully
     } catch (e) {
       print(e.toString());
-      // Handle error
     }
   }
 }

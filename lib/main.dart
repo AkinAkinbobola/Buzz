@@ -5,7 +5,6 @@ import 'package:buzz/onboarding.dart';
 import 'package:buzz/login_register.dart';
 import 'package:buzz/otp.dart';
 import 'package:buzz/splash_screen.dart';
-import 'package:buzz/views/test.dart';
 import 'package:flutter/material.dart';
 
 import 'buzz.dart';
@@ -43,7 +42,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: const SplashScreen(),
+      home: const Buzz(),
     );
   }
 }
