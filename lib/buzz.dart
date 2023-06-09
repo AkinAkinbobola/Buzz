@@ -1,5 +1,8 @@
 // ignore_for_file: unused_import, depend_on_referenced_packages
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:buzz/constant.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +12,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:acr_cloud_sdk/acr_cloud_sdk.dart';
 import 'package:music_visualizer/music_visualizer.dart';
+import 'package:http/http.dart' as http;
 
 class Buzz extends StatefulWidget {
   const Buzz({Key? key}) : super(key: key);
@@ -122,11 +126,11 @@ class _BuzzState extends State<Buzz> {
               ? SizedBox(
                   width: getProportionateScreenWidth(200),
                   height: getProportionateScreenHeight(60),
-                  child: MusicVisualizer(
-                    colors: colors,
-                    duration: duration,
-                    barCount: 15,
-                  ),
+                  // child: MusicVisualizer(
+                  //   colors: colors,
+                  //   duration: duration,
+                  //   barCount: 15,
+                  // ),
                 )
               : const SizedBox(
                   height: 0,
@@ -161,6 +165,7 @@ class _BuzzState extends State<Buzz> {
 
   void startRecognition() async {
     try {
+
       setState(() {
         onClick = !onClick;
       });
@@ -168,6 +173,22 @@ class _BuzzState extends State<Buzz> {
       print('recording');
       // Recognition started successfully
     } catch (e) {
+      print(e.toString());
+      // Handle error
+    }
+  }
+
+  void stopRecognition() async {
+    try {
+      print('recording\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
+
+      setState(() {
+        onClick = !onClick;
+      });
+      await acrCloudSdk.stop();
+      // Recognition started successfully
+    } catch (e) {
+      print(e.toString());
       // Handle error
     }
   }

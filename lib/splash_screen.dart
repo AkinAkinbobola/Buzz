@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:buzz/onboarding.dart';
+import 'package:buzz/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,30 +28,22 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFF725E),
-      body: SizedBox(
+      body: Container(
         width: double.infinity,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: SvgPicture.asset(
-                'assets/splash_screen/Logo.svg',
-                width: 150,
-                height: 150,
-              ),
+            SizedBox(
+              height: 154,
             ),
-            const SizedBox(
-              height: 300,
+            SvgPicture.asset(
+              'assets/splash_screen/buzz_logo.svg',
+              height: 210,
+              width: 210,
             ),
-            Text(
-              'Buzz',
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w900,
-                fontSize: 40,
-              ),
-            )
-
+            SizedBox(
+              height: 106,
+            ),
+            SvgPicture.asset('assets/splash_screen/buzz_text.svg')
           ],
         ),
       ),
