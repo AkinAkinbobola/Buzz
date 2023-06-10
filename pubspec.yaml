@@ -82,6 +82,8 @@ flutter:
     - assets/splash_screen/
     - assets/login_register/
     - assets/buzz/
+    - assets/navbar_icons/
+
 
 
 

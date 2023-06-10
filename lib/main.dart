@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:buzz/constant.dart';
+import 'package:buzz/landing.dart';
 import 'package:buzz/onboarding.dart';
 import 'package:buzz/login_register.dart';
 import 'package:buzz/otp.dart';
@@ -42,7 +43,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: const SplashScreen(),
+      home: const LandingPage(),
     );
   }
 }
