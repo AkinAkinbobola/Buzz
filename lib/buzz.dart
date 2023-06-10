@@ -23,7 +23,6 @@ class Buzz extends StatefulWidget {
 }
 
 class _BuzzState extends State<Buzz> {
-
   late AcrCloudSdk acrCloudSdk;
   bool onClick = false;
   final List<Color> colors = [
@@ -55,6 +54,39 @@ class _BuzzState extends State<Buzz> {
   void searchSong(SongModel song) async {
     // Handle the recognized song
     print(song);
+
+    // Extract relevant information from the song object
+    String title = song.metadata?.music![0].title ?? 'Unknown Title';
+    String artist =
+        song.metadata?.music![0].artists?[0].name ?? 'Unknown Artist';
+    String album = song.metadata?.music![0].album?.name ?? 'Unknown Album';
+
+    // Show a popup dialog with the song details
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Song Details'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Title: $title'),
+              Text('Artist: $artist'),
+              Text('Album: $album'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -129,25 +161,29 @@ class _BuzzState extends State<Buzz> {
           SizedBox(
             height: getProportionateScreenHeight(15),
           ),
-          
-            onClick == true ? Column(
-              children: [
-                Text(
-                  'Listening for music',
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                  ),
+          onClick == true
+              ? Column(
+                  children: [
+                    Text(
+                      'Listening for music',
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    Text(
+                      'Make sure your device can hear the song clearly',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
                 ),
-                Text(
-                  'Make sure your device can hear the song clearly',
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ): const SizedBox(height: 0, width: 0,),
         ],
       ),
     );

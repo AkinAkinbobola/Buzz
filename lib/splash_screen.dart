@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    SizeConfig();
+
     Future.delayed(const Duration(seconds: 4)).then((value) {
       Navigator.of(context).pushReplacement(
           CupertinoPageRoute(builder: (ctx) => const OnboardingScreen()));
@@ -27,6 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: splashOrange,
       body: SizedBox(
