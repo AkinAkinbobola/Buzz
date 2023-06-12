@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:buzz/constant.dart';
+import 'package:buzz/results.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -43,49 +44,35 @@ class _BuzzState extends State<Buzz> {
   void initializeAcrCloud() {
     acrCloudSdk = AcrCloudSdk();
     acrCloudSdk.init(
-      host: 'identify-us-west-2.acrcloud.com',
-      accessKey: '32e8b4a17a8e54e6dae651348bca2759',
-      accessSecret: 'roU98fiFDzlWEWntK4LR9ccmM3QAAf6ywoqu9J6D',
+      host: kHost,
+      accessKey: kAccessKey,
+      accessSecret: kAccessSecret,
       setLog: true,
     );
     acrCloudSdk.songModelStream.listen(searchSong);
   }
 
   void searchSong(SongModel song) async {
-    // Handle the recognized song
-    print(song);
+    final spotifyId =
+        song.metadata!.music?[0].externalMetadata?.spotify?.track?.id;
+    final dezzerId =
+        song.metadata!.music?[0].externalMetadata?.deezer?.track?.id;
 
-    // Extract relevant information from the song object
-    String title = song.metadata?.music![0].title ?? 'Unknown Title';
-    String artist =
-        song.metadata?.music![0].artists?[0].name ?? 'Unknown Artist';
-    String album = song.metadata?.music![0].album?.name ?? 'Unknown Album';
+    var jsonData = await getTrack(spotifyId);
 
-    // Show a popup dialog with the song details
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Song Details'),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Title: $title'),
-              Text('Artist: $artist'),
-              Text('Album: $album'),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
+    // var spotifyData = spotifySongModelFromJson(jsonData!);
+
+    await acrCloudSdk.stop();
+    setState(() {
+      onClick = !onClick;
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Results(
+                jsonData: jsonData!,
+              )),
     );
   }
 
@@ -195,6 +182,7 @@ class _BuzzState extends State<Buzz> {
         onClick = !onClick;
       });
       await acrCloudSdk.start();
+
       print('recording');
     } catch (e) {
       print(e.toString());
@@ -211,4 +199,14 @@ class _BuzzState extends State<Buzz> {
       print(e.toString());
     }
   }
+}
+
+Future<String?> getTrack(spotifyID) async {
+  var link = 'https://api.spotify.com/v1/tracks/$spotifyID';
+  Map<String, String> map1 = {
+    'Authorization':
+        "Bearer BQCH6my8XlrvLHYnwJW9nruWpx6-xwZK1KSaWTQ6hlVzrPX_UbZTonAH2PoLBF07jQOjNv73pjw6vzOEG8JeolIETs18H0zgKoT1ZlEqpnIzsATDLMU"
+  };
+  var response = await http.get(Uri.parse(link), headers: map1);
+  return response.body;
 }

@@ -2,6 +2,7 @@
 
 import 'package:buzz/buzz.dart';
 import 'package:buzz/constant.dart';
+import 'package:buzz/landing.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -178,7 +179,7 @@ class LoginForm extends StatelessWidget {
               text: "Log In",
               press: () {Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Buzz()),
+                  MaterialPageRoute(builder: (context) => const LandingPage()),
                 );},
             ),
           ],

@@ -16,7 +16,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  int selectedIndex = 0;
+  int selectedIndex = 1;
 
   final List<Widget> _pages = [
     const HomePage(),
@@ -36,13 +36,9 @@ class _LandingPageState extends State<LandingPage> {
 
     return Scaffold(
       backgroundColor: backgroundCream,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black,
-        elevation: 0,
-      ),
       body: _pages[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -54,7 +50,6 @@ class _LandingPageState extends State<LandingPage> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/navbar_icons/buzz_icon.svg"),
             label: 'Buzz',
-            backgroundColor: black,
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/navbar_icons/for_you.svg"),
