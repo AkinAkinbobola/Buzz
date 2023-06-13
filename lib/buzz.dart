@@ -1,10 +1,12 @@
-// ignore_for_file: unused_import, depend_on_referenced_packages, avoid_print
+// ignore_for_file: unused_import, depend_on_referenced_packages, avoid_print, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:buzz/constant.dart';
+import 'package:buzz/models/SpotifyAccessTokenModel.dart';
+import 'package:buzz/models/SpotifySongModel.dart' as SpotifyModel;
 import 'package:buzz/results.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
@@ -54,26 +56,23 @@ class _BuzzState extends State<Buzz> {
 
   void searchSong(SongModel song) async {
     final spotifyId =
-        song.metadata!.music?[0].externalMetadata?.spotify?.track?.id;
-    final dezzerId =
-        song.metadata!.music?[0].externalMetadata?.deezer?.track?.id;
+        song.metadata?.music?[0].externalMetadata?.spotify?.track?.id;
 
-    var jsonData = await getTrack(spotifyId);
-
-    // var spotifyData = spotifySongModelFromJson(jsonData!);
-
-    await acrCloudSdk.stop();
-    setState(() {
-      onClick = !onClick;
-    });
-
+    var identifiedSong = await getTrack(spotifyId);
+    
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => Results(
-                jsonData: jsonData!,
+                jsonData: identifiedSong!,
               )),
     );
+
+    await acrCloudSdk.stop();
+
+    setState(() {
+      onClick = !onClick;
+    });
   }
 
   @override
@@ -135,11 +134,6 @@ class _BuzzState extends State<Buzz> {
               ? SizedBox(
                   width: getProportionateScreenWidth(200),
                   height: getProportionateScreenHeight(60),
-                  // child: MusicVisualizer(
-                  //   colors: colors,
-                  //   duration: duration,
-                  //   barCount: 15,
-                  // ),
                 )
               : const SizedBox(
                   height: 0,
@@ -182,8 +176,6 @@ class _BuzzState extends State<Buzz> {
         onClick = !onClick;
       });
       await acrCloudSdk.start();
-
-      print('recording');
     } catch (e) {
       print(e.toString());
     }
@@ -201,12 +193,38 @@ class _BuzzState extends State<Buzz> {
   }
 }
 
-Future<String?> getTrack(spotifyID) async {
-  var link = 'https://api.spotify.com/v1/tracks/$spotifyID';
-  Map<String, String> map1 = {
-    'Authorization':
-        "Bearer BQCH6my8XlrvLHYnwJW9nruWpx6-xwZK1KSaWTQ6hlVzrPX_UbZTonAH2PoLBF07jQOjNv73pjw6vzOEG8JeolIETs18H0zgKoT1ZlEqpnIzsATDLMU"
+Future<String?> getTrack(String? spotifyID) async {
+  var link = Uri.parse('https://api.spotify.com/v1/tracks/$spotifyID');
+  var token = await getToken();
+  if (token != null) {
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    var response = await http.get(link, headers: headers);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
+Future<String?> getToken() async {
+  var uri = Uri.parse('https://accounts.spotify.com/api/token');
+  Map<String, String> headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
   };
-  var response = await http.get(Uri.parse(link), headers: map1);
-  return response.body;
+  Map<String, String> body = {
+    'grant_type': 'client_credentials',
+    'client_id': kClientId,
+    'client_secret': kClientSecret,
+  };
+
+  var response = await http.post(uri, headers: headers, body: body);
+  if (response.statusCode == 200) {
+    var spotifyAccessToken = spotifyAccessTokenModelFromJson(response.body);
+    return spotifyAccessToken.accessToken;
+  } else {
+    return null;
+  }
 }
