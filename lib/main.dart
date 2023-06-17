@@ -1,14 +1,21 @@
 // ignore_for_file: unused_import
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:buzz/constant.dart';
 import 'package:buzz/landing.dart';
 import 'package:buzz/onboarding.dart';
 import 'package:buzz/login_register.dart';
 import 'package:buzz/otp.dart';
+import 'package:buzz/recording.dart';
 import 'package:buzz/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'buzz.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -43,7 +50,9 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: const LandingPage(),
+      home: Recorder(),
     );
   }
 }
+
+

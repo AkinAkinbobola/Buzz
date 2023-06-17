@@ -51,6 +51,9 @@ dependencies:
   flutter_uploader: ^3.0.0-beta.4
   audio_waveforms: ^1.0.4
   flutter_login: ^4.1.1
+  path_provider: ^2.0.15
+  record: ^4.4.4
+  record_mp3: ^3.0.0
 
 
 dev_dependencies:

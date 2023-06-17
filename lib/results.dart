@@ -25,17 +25,15 @@ class _ResultsState extends State<Results> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        child: Column(
-          children: [
-            Text('Song ID: ${songData.id ?? "N/A"}'),
-            Text('Song name: ${songData.name ?? "N/A"}'),
-            Text('Album: ${songData.album?.name ?? "N/A"}'),
-            Text('Album ID: ${songData.album?.id ?? "N/A"}'),
-            Text('Year Released: ${songData.album?.releaseDate ?? "N/A"}'),
-            Text('Artists: ${getArtistsNames(songData.artists)}'),
-          ],
-        ),
+      body: Column(
+        children: [
+          Text('Song ID: ${songData.id ?? "N/A"}'),
+          Text('Song name: ${songData.name ?? "N/A"}'),
+          Text('Album: ${songData.album?.name ?? "N/A"}'),
+          Text('Album ID: ${songData.album?.id ?? "N/A"}'),
+          Text('Year Released: ${songData.album?.releaseDate ?? "N/A"}'),
+          Text('Artists: ${getArtistsNames(songData.artists)}'),
+        ],
       ),
     );
   }
