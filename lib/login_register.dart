@@ -107,6 +107,8 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController usernameController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
     return Padding(
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(25)),
@@ -143,6 +145,7 @@ class LoginForm extends StatelessWidget {
             ),
             SizedBox(height: getProportionateScreenHeight(25)),
             TextFormField(
+              controller: usernameController,
               decoration: InputDecoration(
                 labelText: 'Username',
                 labelStyle: GoogleFonts.poppins(
@@ -153,16 +156,7 @@ class LoginForm extends StatelessWidget {
             ),
             SizedBox(height: getProportionateScreenHeight(25)),
             TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Email',
-                labelStyle: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
-              ),
-            ),
-            SizedBox(height: getProportionateScreenHeight(25)),
-            TextFormField(
+              controller: passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
                 labelStyle: GoogleFonts.poppins(
@@ -192,7 +186,13 @@ class LoginForm extends StatelessWidget {
             SizedBox(height: getProportionateScreenHeight(48)),
             FormButton(
               text: "Log In",
-              press: () {
+              press: () async {
+                Map<String, dynamic> userData = {
+                  'username': usernameController.text,
+                  'password': passwordController.text,
+                };
+                await AuthClient.loginUser(userData);
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const LandingPage()),

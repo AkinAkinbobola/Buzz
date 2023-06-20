@@ -55,6 +55,7 @@ dependencies:
   record: ^4.4.4
   record_mp3: ^3.0.0
   dio: ^5.2.1+1
+  shared_preferences: ^2.0.7
 
 
 dev_dependencies:
