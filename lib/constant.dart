@@ -1,3 +1,4 @@
+import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
 
 // Colors
@@ -15,3 +16,47 @@ const kAccessSecret = 'roU98fiFDzlWEWntK4LR9ccmM3QAAf6ywoqu9J6D';
 // Spotify
 const kClientId = 'bdeae17d554341acb8d42f860b0daddc';
 const kClientSecret = '1a04860b135048ebbb1e75b1d20ebed1';
+
+// Snackbar
+/// Show Error SnackBar
+ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorSnackBar(
+    BuildContext context, String exception) {
+  return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    backgroundColor: darkOrange,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    content: Text(
+      exception,
+      style: Theme.of(context)
+          .textTheme
+          .bodyLarge!
+          .copyWith(fontWeight: FontWeight.bold, color: backgroundCream),
+    ),
+    duration: const Duration(seconds: 3),
+    elevation: 2,
+    behavior: SnackBarBehavior.floating,
+    padding: EdgeInsets.all(getProportionateScreenWidth(20)),
+  ));
+}
+
+/// Show Error SnackBar
+ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSuccessSnackBar(
+    BuildContext context, String message) {
+  return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    backgroundColor: splashOrange,
+    content: Text(
+      message,
+      style: Theme.of(context)
+          .textTheme
+          .bodyLarge!
+          .copyWith(fontWeight: FontWeight.bold, color: backgroundCream),
+    ),
+    duration: const Duration(seconds: 3),
+    elevation: 2,
+    behavior: SnackBarBehavior.floating,
+    padding: EdgeInsets.all(getProportionateScreenWidth(20)),
+    margin: EdgeInsets.only(
+        bottom: SizeConfig.screenHeight! - 120,
+        left: getProportionateScreenWidth(10),
+        right: getProportionateScreenWidth(10)),
+  ));
+}

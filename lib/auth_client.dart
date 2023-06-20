@@ -18,26 +18,26 @@ abstract class AuthClient {
       );
 
       final registerModel = registerModelFromJson(response.body);
-      saveTokenLocally(registerModel.token);
       return registerModel;
     } catch (e) {
       rethrow;
     }
   }
 
-  static Future<void> loginUser(Map<String, dynamic>? userData) async {
-    var token = getTokenLocally();
-    print(token);
-    // return LoginModel.fromJson('');
-  }
-
-  static Future<void> saveTokenLocally(String? token) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token!);
-  }
-
-  static Future<String?> getTokenLocally() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
+  static Future<LoginModel> loginUser(Map<String, dynamic>? userData) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8000/api/login/'),
+        body: userData,
+      );
+      if (response.statusCode != 200) {
+        throw response.body;
+      } else {
+        final loginModel = loginModelFromJson(response.body);
+        return loginModel;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 }

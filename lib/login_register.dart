@@ -188,15 +188,20 @@ class LoginForm extends StatelessWidget {
               text: "Log In",
               press: () async {
                 Map<String, dynamic> userData = {
-                  'username': usernameController.text,
+                  'username': usernameController.text.trim(),
                   'password': passwordController.text,
                 };
-                await AuthClient.loginUser(userData);
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LandingPage()),
-                );
+                try {
+                  await AuthClient.loginUser(userData);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LandingPage()),
+                  );
+                } catch (e) {
+                  showErrorSnackBar(context, e.toString());
+                }
               },
             ),
           ],
@@ -325,7 +330,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const LandingPage()),
+                        builder: (context) => const LoginRegisterScreen()),
                   );
                 } catch (e) {
                   // Handle any errors that occur during the registration process
