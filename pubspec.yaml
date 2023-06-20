@@ -54,6 +54,7 @@ dependencies:
   path_provider: ^2.0.15
   record: ^4.4.4
   record_mp3: ^3.0.0
+  dio: ^5.2.1+1
 
 
 dev_dependencies:

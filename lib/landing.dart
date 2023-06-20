@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:buzz/buzz.dart';
 import 'package:buzz/constant.dart';
 import 'package:buzz/size_config.dart';

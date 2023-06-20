@@ -1,5 +1,7 @@
+// ignore_for_file: await_only_futures
+
 import 'dart:io';
-import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record_mp3/record_mp3.dart';
@@ -18,11 +20,9 @@ class _RecorderState extends State<Recorder> {
 
   Future<void> startRecording() async {
     final appDir = await getApplicationDocumentsDirectory();
-    filePath = appDir.path + '/audio.mp3';
+    filePath = '${appDir.path}/audio.mp3';
 
-    await RecordMp3.instance.start(filePath!, (type) {
-      print('Record error: $type');
-    });
+    await RecordMp3.instance.start(filePath!, (type) {});
 
     setState(() {
       isRecording = true;
@@ -36,7 +36,6 @@ class _RecorderState extends State<Recorder> {
       isRecording = false;
     });
 
-    print('Recording saved to: $filePath');
     uploadRecording();
   }
 
@@ -51,9 +50,13 @@ class _RecorderState extends State<Recorder> {
       final response = await request.send();
 
       if (response.statusCode == 201) {
-        print('Recording uploaded successfully');
+        if (kDebugMode) {
+          print('Recording uploaded successfully');
+        }
       } else {
-        print('Failed to upload recording. Error: ${response.reasonPhrase}');
+        if (kDebugMode) {
+          print('Failed to upload recording. Error: ${response.reasonPhrase}');
+        }
       }
     }
   }
@@ -67,17 +70,21 @@ class _RecorderState extends State<Recorder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            if (isRecording) {
-              await stopRecording();
-            } else {
-              await startRecording();
-            }
-          },
-          child: Text(isRecording ? 'Stop' : 'Record'),
-        ),
+      body: Column(
+        children: [
+          Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                if (isRecording) {
+                  await stopRecording();
+                } else {
+                  await startRecording();
+                }
+              },
+              child: Text(isRecording ? 'Stop' : 'Record'),
+            ),
+          ),
+        ],
       ),
     );
   }

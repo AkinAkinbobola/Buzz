@@ -13,7 +13,6 @@ import 'package:buzz/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'buzz.dart';
-import 'dart:convert';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
@@ -50,7 +49,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: Recorder(),
+      home: const LoginRegisterScreen(),
     );
   }
 }

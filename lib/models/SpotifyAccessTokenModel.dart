@@ -2,6 +2,8 @@
 //
 //     final spotifyAccessTokenModel = spotifyAccessTokenModelFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 SpotifyAccessTokenModel spotifyAccessTokenModelFromJson(String str) =>

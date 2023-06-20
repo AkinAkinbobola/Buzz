@@ -1,18 +1,23 @@
-// ignore_for_file: library_private_types_in_public_api, unused_import, depend_on_referenced_packages
+// ignore_for_file: library_private_types_in_public_api, unused_import, depend_on_referenced_packages, use_build_context_synchronously
 
+import 'package:buzz/auth_client.dart';
 import 'package:buzz/buzz.dart';
 import 'package:buzz/constant.dart';
 import 'package:buzz/landing.dart';
+import 'package:buzz/models/RegisterModel.dart';
 import 'package:buzz/size_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 import 'form_button.dart';
 import 'otp.dart';
 
 class LoginRegisterScreen extends StatefulWidget {
-  const LoginRegisterScreen({super.key});
+  const LoginRegisterScreen({Key? key}) : super(key: key);
 
   @override
   _LoginRegisterScreenState createState() => _LoginRegisterScreenState();
@@ -43,7 +48,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: getProportionateScreenHeight(155),
+            height: getProportionateScreenHeight(100),
           ),
           Padding(
             padding: EdgeInsets.only(left: getProportionateScreenWidth(56)),
@@ -98,7 +103,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
 }
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({super.key});
+  const LoginForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +141,17 @@ class LoginForm extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(10)),
+            SizedBox(height: getProportionateScreenHeight(25)),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Username',
+                labelStyle: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(25)),
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Email',
@@ -177,10 +192,12 @@ class LoginForm extends StatelessWidget {
             SizedBox(height: getProportionateScreenHeight(48)),
             FormButton(
               text: "Log In",
-              press: () {Navigator.push(
+              press: () {
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const LandingPage()),
-                );},
+                );
+              },
             ),
           ],
         ),
@@ -189,8 +206,27 @@ class LoginForm extends StatelessWidget {
   }
 }
 
-class RegisterForm extends StatelessWidget {
-  const RegisterForm({super.key});
+class RegisterForm extends StatefulWidget {
+  const RegisterForm({Key? key}) : super(key: key);
+
+  @override
+  _RegisterFormState createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<RegisterForm> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,6 +267,18 @@ class RegisterForm extends StatelessWidget {
             ),
             SizedBox(height: getProportionateScreenHeight(10)),
             TextFormField(
+              controller: usernameController,
+              decoration: InputDecoration(
+                labelText: 'Username',
+                labelStyle: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
+            TextFormField(
+              controller: emailController,
               decoration: InputDecoration(
                 labelText: 'Email',
                 labelStyle: GoogleFonts.poppins(
@@ -239,8 +287,9 @@ class RegisterForm extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(25)),
+            SizedBox(height: getProportionateScreenHeight(10)),
             TextFormField(
+              controller: passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
                 labelStyle: GoogleFonts.poppins(
@@ -250,8 +299,9 @@ class RegisterForm extends StatelessWidget {
               ),
               obscureText: true,
             ),
-            SizedBox(height: getProportionateScreenHeight(25)),
+            SizedBox(height: getProportionateScreenHeight(10)),
             TextFormField(
+              controller: confirmPasswordController,
               decoration: InputDecoration(
                 labelText: 'Confirm Password',
                 labelStyle: GoogleFonts.poppins(
@@ -263,11 +313,26 @@ class RegisterForm extends StatelessWidget {
             SizedBox(height: getProportionateScreenHeight(48)),
             FormButton(
               text: "Register",
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Buzz()),
-                );
+              press: () async {
+                Map<String, dynamic> userData = {
+                  'username': usernameController.text,
+                  'email': emailController.text,
+                  'password': passwordController.text,
+                };
+                try {
+                  await AuthClient.registerUser(userData);
+                  // Handle the response as needed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LandingPage()),
+                  );
+                } catch (e) {
+                  // Handle any errors that occur during the registration process
+                  if (kDebugMode) {
+                    print(e);
+                  }
+                }
               },
             ),
           ],

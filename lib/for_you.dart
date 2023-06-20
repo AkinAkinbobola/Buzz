@@ -10,7 +10,7 @@ class ForYou extends StatefulWidget {
 class _ForYouState extends State<ForYou> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Text("For you"),
     );
   }
