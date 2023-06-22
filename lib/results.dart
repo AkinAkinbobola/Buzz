@@ -1,3 +1,4 @@
+import 'package:buzz/constant.dart';
 import 'package:flutter/material.dart';
 
 import 'models/SpotifySongModel.dart';
@@ -22,7 +23,10 @@ class _ResultsState extends State<Results> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: splashOrange,
+      appBar: AppBar(
+        backgroundColor: splashOrange,
+      ),
       body: Column(
         children: [
           Text('Song ID: ${songData.id ?? "N/A"}'),

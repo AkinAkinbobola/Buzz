@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:buzz/constant.dart';
+import 'package:buzz/display_results.dart';
 import 'package:buzz/landing.dart';
 import 'package:buzz/onboarding.dart';
 import 'package:buzz/login_register.dart';
@@ -49,9 +50,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: const LoginRegisterScreen(),
+      home: const DisplayResults(),
     );
   }
 }
-
-
