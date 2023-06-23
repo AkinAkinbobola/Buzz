@@ -123,17 +123,17 @@ class _DisplayResultsState extends State<DisplayResults> {
             SizedBox(
               height: getProportionateScreenHeight(4),
             ),
-            SizedBox(
-              child: Text(
-                // "Genres: ${songData.album?.genres?.join(', ') ?? 'N/A'}",
-                "Genres:",
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
+            // SizedBox(
+            //   child: Text(
+            //     // "Genres: ${songData.album?.genres?.join(', ') ?? 'N/A'}",
+            //     "Genres:",
+            //     textAlign: TextAlign.center,
+            //     style: GoogleFonts.poppins(
+            //       fontSize: 14,
+            //       fontWeight: FontWeight.w500,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

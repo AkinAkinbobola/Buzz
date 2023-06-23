@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: const LandingPage(),
+      home: const Recorder(),
     );
   }
 }

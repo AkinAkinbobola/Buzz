@@ -18,7 +18,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  int selectedIndex = 1;
+  int selectedIndex = 0;
 
   final List<Widget> _pages = [
     // const HomePage(),
