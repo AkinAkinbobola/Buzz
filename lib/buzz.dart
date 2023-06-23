@@ -5,9 +5,9 @@ import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:buzz/constant.dart';
+import 'package:buzz/display_results.dart';
 import 'package:buzz/models/SpotifyAccessTokenModel.dart';
 import 'package:buzz/models/SpotifySongModel.dart' as SpotifyModel;
-import 'package:buzz/results.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,14 +58,13 @@ class _BuzzState extends State<Buzz> {
     final spotifyId =
         song.metadata?.music?[0].externalMetadata?.spotify?.track?.id;
 
-    var identifiedSong = await getTrack(spotifyId);
-    // var identifiedSong = ;
+    var songData = await getTrack(spotifyId);
 
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => Results(
-                jsonData: identifiedSong!,
+          builder: (context) => DisplayResults(
+                songData: songData!,
               )),
     );
 
