@@ -49,7 +49,7 @@ class _BuzzState extends State<Buzz> {
       host: kHost,
       accessKey: kAccessKey,
       accessSecret: kAccessSecret,
-      setLog: true,
+      // setLog: true,
     );
     acrCloudSdk.songModelStream.listen(searchSong);
   }
@@ -193,8 +193,8 @@ class _BuzzState extends State<Buzz> {
   }
 }
 
-Future<String?> getTrack(String? spotifyID) async {
-  var link = Uri.parse('https://api.spotify.com/v1/tracks/$spotifyID');
+Future<String?> getTrack(String? trackID) async {
+  var link = Uri.parse('https://api.spotify.com/v1/tracks/$trackID');
   var token = await getToken();
   if (token != null) {
     Map<String, String> headers = {'Authorization': 'Bearer $token'};

@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:buzz/models/LoginModel.dart';
 import 'package:buzz/models/RegisterModel.dart';
+import 'package:buzz/models/artistsModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
