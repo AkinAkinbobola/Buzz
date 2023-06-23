@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -64,7 +65,10 @@ class _UploadState extends State<Upload> {
                 if (result != null) {
                   PlatformFile file = result.files.first;
 
-                  await uploadRecording(File(file.path!));
+                  var data = await uploadRecording(File(file.path!));
+                  var decodedData = json.decode(data!);
+                  var jsonString = json.encode(decodedData);
+                  print(jsonString);
                 } else {
                   // User canceled the picker
                 }
@@ -84,7 +88,7 @@ class _UploadState extends State<Upload> {
   }
 }
 
-Future<void> uploadRecording(File file) async {
+Future<String?> uploadRecording(File file) async {
   if (file.path != null) {
     Uint8List bytes = await file.readAsBytes();
 
@@ -92,14 +96,17 @@ Future<void> uploadRecording(File file) async {
 
     final request = http.MultipartRequest('POST', url);
 
-    request.files.add(await http.MultipartFile.fromBytes('audio', bytes,
-        filename: "audio.mp3"));
+    request.files.add(await http.MultipartFile.fromBytes(
+      'audio',
+      bytes,
+      filename: "audio.mp3",
+    ));
 
     final response = await request.send();
-
     if (response.statusCode == 200) {
       if (kDebugMode) {
         print('Recording uploaded successfully');
+        return await response.stream.bytesToString();
       }
     } else {
       if (kDebugMode) {
@@ -107,4 +114,5 @@ Future<void> uploadRecording(File file) async {
       }
     }
   }
+  return null;
 }
