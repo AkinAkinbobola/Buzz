@@ -5,6 +5,7 @@ import 'package:buzz/models/SpotifySongModel.dart' as SpotifyModel;
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:spotify/spotify.dart' as SpotifyPack;
 
 class DisplayResults extends StatefulWidget {
   const DisplayResults({Key? key, required this.songData}) : super(key: key);
@@ -119,20 +120,38 @@ class _DisplayResultsState extends State<DisplayResults> {
             SizedBox(
               height: getProportionateScreenHeight(4),
             ),
-            // SizedBox(
-            //   child: Text(
-            //     // "Genres: ${songData.album?.genres?.join(', ') ?? 'N/A'}",
-            //     "Genres:",
-            //     textAlign: TextAlign.center,
-            //     style: GoogleFonts.poppins(
-            //       fontSize: 14,
-            //       fontWeight: FontWeight.w500,
-            //     ),
-            //   ),
-            // ),
+            SizedBox(
+              child: Text(
+                // "Genres: ${songData.album?.genres?.join(', ') ?? 'N/A'}",
+                "Genres:",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+Future<void> getRecommendations() async {
+  final credentials =
+      SpotifyPack.SpotifyApiCredentials(kClientId, kClientSecret);
+  final spotify = SpotifyPack.SpotifyApi(credentials);
+  final artist = await spotify.artists.get('5tQMB0cuNXdCtzovGt55uD');
+  final recommendations = await spotify.recommendations.get(
+    seedTracks: ['3icILkEkTKNPaPQ5usTbsw'],
+    seedArtists: ['5tQMB0cuNXdCtzovGt55uD'],
+    seedGenres: ['plugg'],
+    limit: 10,
+  );
+  List<SpotifyPack.TrackSimple> tracks = recommendations.tracks!;
+  tracks.forEach((element) {
+    debugPrint(element.name);
+  });
+  print(artist.genres);
 }
