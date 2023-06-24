@@ -1,14 +1,19 @@
+// ignore_for_file: non_constant_identifier_names, await_only_futures
+
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:buzz/constant.dart';
+import 'package:buzz/models/ACRCloudModel.dart';
 import 'package:buzz/size_config.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+
+import 'display_results.dart';
+import 'models/SpotifyAccessTokenModel.dart';
 
 class Upload extends StatefulWidget {
   const Upload({super.key});
@@ -18,6 +23,7 @@ class Upload extends StatefulWidget {
 }
 
 class _UploadState extends State<Upload> {
+  late AcrCloudModel? acrResponse;
   @override
   void initState() {
     super.initState();
@@ -26,6 +32,8 @@ class _UploadState extends State<Upload> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Scaffold(
       backgroundColor: backgroundCream,
       appBar: AppBar(
@@ -65,12 +73,26 @@ class _UploadState extends State<Upload> {
                 if (result != null) {
                   PlatformFile file = result.files.first;
 
-                  var data = await uploadRecording(File(file.path!));
-                  var decodedData = json.decode(data!);
-                  var jsonString = json.encode(decodedData);
-                  print(jsonString);
-                } else {
-                  // User canceled the picker
+                  try {
+                    var data = await uploadRecording(File(file.path!));
+                    acrResponse = acrCloudModelFromJson(json.decode(data!));
+                    var spotify_id = acrResponse?.metadata?.music?[0]
+                        .externalMetadata?.spotify?.track?.id;
+                    var songData = await getTrack(spotify_id);
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DisplayResults(
+                                songData: songData!,
+                              )),
+                    );
+                  } catch (e) {
+                    if (kDebugMode) {
+                      print(e);
+                    }
+                  }
                 }
               },
               child: Text(
@@ -89,30 +111,66 @@ class _UploadState extends State<Upload> {
 }
 
 Future<String?> uploadRecording(File file) async {
-  if (file.path != null) {
-    Uint8List bytes = await file.readAsBytes();
+  Uint8List bytes = await file.readAsBytes();
 
-    final url = Uri.parse('http://10.0.2.2:8000/upload-audio');
+  final url = Uri.parse('http://10.0.2.2:8000/upload-audio');
 
-    final request = http.MultipartRequest('POST', url);
+  final request = http.MultipartRequest('POST', url);
 
-    request.files.add(await http.MultipartFile.fromBytes(
-      'audio',
-      bytes,
-      filename: "audio.mp3",
-    ));
+  request.files.add(await http.MultipartFile.fromBytes(
+    'audio',
+    bytes,
+    filename: "audio.mp3",
+  ));
 
-    final response = await request.send();
-    if (response.statusCode == 200) {
-      if (kDebugMode) {
-        print('Recording uploaded successfully');
-        return await response.stream.bytesToString();
-      }
-    } else {
-      if (kDebugMode) {
-        print('Failed to upload recording. Error: ${response.reasonPhrase}');
-      }
+  var streamedResponse = await request.send();
+  var response = await http.Response.fromStream(streamedResponse);
+
+  if (response.statusCode == 200) {
+    if (kDebugMode) {
+      print('Recording uploaded successfully');
+      return response.body;
+    }
+  } else {
+    if (kDebugMode) {
+      print('Failed to upload recording. Error: ${response.reasonPhrase}');
     }
   }
   return null;
+}
+
+Future<String?> getTrack(String? trackID) async {
+  var link = Uri.parse('https://api.spotify.com/v1/tracks/$trackID');
+  var token = await getToken();
+  if (token != null) {
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    var response = await http.get(link, headers: headers);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
+Future<String?> getToken() async {
+  var uri = Uri.parse('https://accounts.spotify.com/api/token');
+  Map<String, String> headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+  Map<String, String> body = {
+    'grant_type': 'client_credentials',
+    'client_id': kClientId,
+    'client_secret': kClientSecret,
+  };
+
+  var response = await http.post(uri, headers: headers, body: body);
+  if (response.statusCode == 200) {
+    var spotifyAccessToken = spotifyAccessTokenModelFromJson(response.body);
+    return spotifyAccessToken.accessToken;
+  } else {
+    return null;
+  }
 }

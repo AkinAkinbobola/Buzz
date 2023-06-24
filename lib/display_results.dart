@@ -1,14 +1,10 @@
-import 'dart:convert';
+// ignore_for_file: library_prefixes
 
-import 'package:acr_cloud_sdk/acr_cloud_sdk.dart';
 import 'package:buzz/constant.dart';
 import 'package:buzz/models/SpotifySongModel.dart' as SpotifyModel;
-import 'package:buzz/models/artistsModel.dart' as ArtistModel;
 import 'package:buzz/size_config.dart';
-import 'package:buzz/spotify_client.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class DisplayResults extends StatefulWidget {
   const DisplayResults({Key? key, required this.songData}) : super(key: key);

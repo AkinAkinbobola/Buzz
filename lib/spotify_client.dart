@@ -1,12 +1,4 @@
-import 'dart:convert';
-import 'package:acr_cloud_sdk/acr_cloud_sdk.dart';
-import 'package:buzz/models/LoginModel.dart';
-import 'package:buzz/models/RegisterModel.dart';
-import 'package:buzz/models/artistsModel.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:dio/dio.dart';
 
 import 'constant.dart';
 import 'models/SpotifyAccessTokenModel.dart';

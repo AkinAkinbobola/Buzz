@@ -2,6 +2,8 @@
 //
 //     final spotifyArtistModel = spotifyArtistModelFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 SpotifyArtistModel spotifyArtistModelFromJson(String str) =>
