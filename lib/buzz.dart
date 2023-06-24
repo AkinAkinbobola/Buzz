@@ -49,7 +49,7 @@ class _BuzzState extends State<Buzz> {
       host: kHost,
       accessKey: kAccessKey,
       accessSecret: kAccessSecret,
-      // setLog: true,
+      setLog: true,
     );
     acrCloudSdk.songModelStream.listen(searchSong);
   }
@@ -58,13 +58,12 @@ class _BuzzState extends State<Buzz> {
     final spotifyId =
         song.metadata?.music?[0].externalMetadata?.spotify?.track?.id;
 
-    var songData = await getTrack(spotifyId);
 
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => DisplayResults(
-                songData: songData!,
+                songID: spotifyId!,
               )),
     );
 
@@ -190,41 +189,5 @@ class _BuzzState extends State<Buzz> {
     } catch (e) {
       print(e.toString());
     }
-  }
-}
-
-Future<String?> getTrack(String? trackID) async {
-  var link = Uri.parse('https://api.spotify.com/v1/tracks/$trackID');
-  var token = await getToken();
-  if (token != null) {
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    var response = await http.get(link, headers: headers);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return null;
-    }
-  } else {
-    return null;
-  }
-}
-
-Future<String?> getToken() async {
-  var uri = Uri.parse('https://accounts.spotify.com/api/token');
-  Map<String, String> headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  };
-  Map<String, String> body = {
-    'grant_type': 'client_credentials',
-    'client_id': kClientId,
-    'client_secret': kClientSecret,
-  };
-
-  var response = await http.post(uri, headers: headers, body: body);
-  if (response.statusCode == 200) {
-    var spotifyAccessToken = spotifyAccessTokenModelFromJson(response.body);
-    return spotifyAccessToken.accessToken;
-  } else {
-    return null;
   }
 }

@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:spotify/spotify.dart' as SpotifyPack;
 
 import 'display_results.dart';
 import 'models/SpotifyAccessTokenModel.dart';
@@ -23,10 +24,14 @@ class Upload extends StatefulWidget {
 }
 
 class _UploadState extends State<Upload> {
+  bool isLoading = false;
   late AcrCloudModel? acrResponse;
   @override
   void initState() {
     super.initState();
+    setState(() {
+      isLoading = false;
+    });
     SizeConfig();
   }
 
@@ -41,71 +46,81 @@ class _UploadState extends State<Upload> {
         foregroundColor: Colors.black,
         elevation: 0,
       ),
-      body: SizedBox(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Ready to Upload a song?",
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(
-              height: getProportionateScreenHeight(10),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4B4B4B),
-                foregroundColor: darkOrange,
-                elevation: 0,
-                minimumSize: Size(getProportionateScreenWidth(256),
-                    getProportionateScreenHeight(41)),
-              ),
-              onPressed: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ["mp3", "wav"],
-                );
-                if (result != null) {
-                  PlatformFile file = result.files.first;
-
-                  try {
-                    var data = await uploadRecording(File(file.path!));
-                    acrResponse = acrCloudModelFromJson(json.decode(data!));
-                    var spotify_id = acrResponse?.metadata?.music?[0]
-                        .externalMetadata?.spotify?.track?.id;
-                    var songData = await getTrack(spotify_id);
-
-                    // ignore: use_build_context_synchronously
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DisplayResults(
-                                songData: songData!,
-                              )),
-                    );
-                  } catch (e) {
-                    if (kDebugMode) {
-                      print(e);
-                    }
-                  }
-                }
-              },
-              child: Text(
-                "Upload",
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
               ),
             )
-          ],
-        ),
-      ),
+          : SizedBox(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Ready to Upload a song?",
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    height: getProportionateScreenHeight(10),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF4B4B4B),
+                      foregroundColor: darkOrange,
+                      elevation: 0,
+                      minimumSize: Size(getProportionateScreenWidth(256),
+                          getProportionateScreenHeight(41)),
+                    ),
+                    onPressed: () async {
+                      FilePickerResult? result =
+                          await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ["mp3", "wav"],
+                      );
+                      if (result != null) {
+                        PlatformFile file = result.files.first;
+
+                        try {
+                          var data = await uploadRecording(File(file.path!));
+                          setState(() {
+                            isLoading = true;
+                          });
+                          acrResponse =
+                              acrCloudModelFromJson(json.decode(data!));
+                          var spotify_id = acrResponse?.metadata?.music?[0]
+                              .externalMetadata?.spotify?.track?.id;
+
+                          // ignore: use_build_context_synchronously
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DisplayResults(
+                                      songID: spotify_id!,
+                                    )),
+                          );
+                        } catch (e) {
+                          if (kDebugMode) {
+                            print(e);
+                          }
+                        }
+                      }
+                    },
+                    child: Text(
+                      "Upload",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
     );
   }
 }
