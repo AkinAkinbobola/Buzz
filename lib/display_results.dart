@@ -1,5 +1,6 @@
+// ignore_for_file: library_prefixes
+
 import 'package:buzz/constant.dart';
-import 'package:buzz/models/SpotifySongModel.dart' as SpotifyModel;
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
