@@ -4,6 +4,7 @@ import 'package:buzz/constant.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:spotify/spotify.dart' as SpotifyPack;
 
 class DisplayResults extends StatefulWidget {
@@ -15,7 +16,9 @@ class DisplayResults extends StatefulWidget {
 }
 
 class _DisplayResultsState extends State<DisplayResults> {
+  final player = AudioPlayer();
   bool isLoading = false;
+  bool isPlaying = false; // Track playing state
   String? songName;
   String? albumName;
   String? year;
@@ -35,6 +38,12 @@ class _DisplayResultsState extends State<DisplayResults> {
     getSongDetails(widget.songID);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    player.dispose();
+  }
+
   Future<void> getSongDetails(String songID) async {
     final credentials =
         SpotifyPack.SpotifyApiCredentials(kClientId, kClientSecret);
@@ -42,6 +51,7 @@ class _DisplayResultsState extends State<DisplayResults> {
     final song = await spotify.tracks.get(songID);
     final artistID = song.album?.artists?[0].id;
     final artistsResponse = await spotify.artists.get(artistID!);
+    final duration = await player.setUrl(song.previewUrl!);
 
     setState(() {
       songName = song.name;
@@ -53,6 +63,17 @@ class _DisplayResultsState extends State<DisplayResults> {
       artists = song.artists?.map((artist) => artist.name).toList();
       genres = artistsResponse.genres;
       isLoading = false;
+    });
+  }
+
+  Future<void> togglePlay() async {
+    if (isPlaying) {
+      await player.pause();
+    } else {
+      await player.play();
+    }
+    setState(() {
+      isPlaying = !isPlaying;
     });
   }
 
@@ -159,6 +180,7 @@ class _DisplayResultsState extends State<DisplayResults> {
                       height: getProportionateScreenHeight(4),
                     ),
                     SizedBox(
+                      width: getProportionateScreenWidth(280),
                       child: Text(
                         "Genres: ${genres?.join(', ') ?? 'N/A'}",
                         textAlign: TextAlign.center,
@@ -167,6 +189,10 @@ class _DisplayResultsState extends State<DisplayResults> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
+                    ),
+                    ElevatedButton(
+                      onPressed: togglePlay,
+                      child: Text(isPlaying ? "Stop" : "Preview"),
                     ),
                   ],
                 ),
