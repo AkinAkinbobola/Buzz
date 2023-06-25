@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:buzz/constant.dart';
 import 'package:buzz/display_results.dart';
+import 'package:buzz/error.dart';
 import 'package:buzz/models/SpotifyAccessTokenModel.dart';
 import 'package:buzz/models/SpotifySongModel.dart' as SpotifyModel;
 import 'package:buzz/size_config.dart';
@@ -34,6 +35,7 @@ class _BuzzState extends State<Buzz> {
     Colors.black,
     Colors.black,
   ];
+  List<String>? noID;
 
   final List<int> duration = [900, 700, 600, 800, 500];
 
@@ -57,15 +59,21 @@ class _BuzzState extends State<Buzz> {
   void searchSong(SongModel song) async {
     final spotifyId =
         song.metadata?.music?[0].externalMetadata?.spotify?.track?.id;
+    if (spotifyId == null) {
+      print("test");
 
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => DisplayResults(
-                songID: spotifyId!,
-              )),
-    );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ErrorPage() ));
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => DisplayResults(
+                  songID: spotifyId,
+                )),
+      );
+    }
 
     await acrCloudSdk.stop();
 

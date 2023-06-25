@@ -1,3 +1,4 @@
+import 'package:buzz/albumInfo.dart';
 import 'package:buzz/constant.dart';
 import 'package:buzz/recommendations.dart';
 import 'package:buzz/size_config.dart';
@@ -120,15 +121,18 @@ class _DisplayResultsState extends State<DisplayResults> {
                       height: getProportionateScreenHeight(300),
                       width: getProportionateScreenWidth(300),
                       decoration: BoxDecoration(
-                        color: darkOrange,
                         borderRadius: BorderRadius.circular(150),
                         border: Border.all(
                             width: 20, color: darkOrange.withOpacity(0.5)),
                       ),
-                      child: ClipOval(
-                        child: Image.network(
-                          pictures?[0].url ?? '',
-                          fit: BoxFit.cover,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                pictures![0].url!,
+                              )),
+                          borderRadius: BorderRadius.circular(150),
                         ),
                       ),
                     ),
@@ -158,13 +162,41 @@ class _DisplayResultsState extends State<DisplayResults> {
                     ),
                     SizedBox(
                       width: getProportionateScreenWidth(280),
-                      child: Text(
-                        "${(artists?.length ?? 0) > 1 ? 'Artists' : 'Artist'}: ${artists?.join(', ')}",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    ),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      children: List.generate(
+                        artists!.length + 1,
+                        (index) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                                right: getProportionateScreenWidth(4)),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const AlbumInfo()),
+                                );
+                              },
+                              child: index == 0
+                                  ? Text(
+                                      "${(artists?.length ?? 0) > 1 ? 'Artists' : 'Artist'}:",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    )
+                                  : Text(
+                                      artists![index - 1]!,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                     SizedBox(
@@ -222,11 +254,11 @@ class _DisplayResultsState extends State<DisplayResults> {
                                     isPlaying = false;
                                   });
                                 },
-                                child: Text("Stop"),
+                                child: const Text("Stop"),
                               ),
                             ],
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -238,7 +270,7 @@ class _DisplayResultsState extends State<DisplayResults> {
                           ),
                         );
                       },
-                      child: Text("View Recommendations"),
+                      child: const Text("View Recommendations"),
                     ),
                   ],
                 ),
