@@ -1,5 +1,3 @@
-// ignore_for_file: library_prefixes
-
 import 'package:buzz/constant.dart';
 import 'package:buzz/recommendations.dart';
 import 'package:buzz/size_config.dart';
@@ -20,6 +18,7 @@ class _DisplayResultsState extends State<DisplayResults> {
   final player = AudioPlayer();
   bool isLoading = false;
   bool isPlaying = false;
+  bool isPreview = true;
   String? songName;
   String? albumName;
   String? year;
@@ -27,8 +26,9 @@ class _DisplayResultsState extends State<DisplayResults> {
   String? albumType;
   List<SpotifyPack.Image>? pictures;
   List<String?>? artists;
-  List<String?>? genres;
+  List<String>? genres;
   List<SpotifyPack.TrackSimple>? tracks;
+  final List<String> defaultGenre = ['pop'];
 
   @override
   void initState() {
@@ -53,13 +53,20 @@ class _DisplayResultsState extends State<DisplayResults> {
     final song = await spotify.tracks.get(songID);
     final artistID = song.album?.artists?[0].id;
     final artistsResponse = await spotify.artists.get(artistID!);
-    await player.setUrl(song.previewUrl!);
-
+    if (song.previewUrl != null) {
+      await player.setUrl(song.previewUrl!);
+    } else {
+      setState(() {
+        isPreview = false;
+      });
+    }
     SpotifyPack.Recommendations recommendations =
         await spotify.recommendations.get(
       seedArtists: [artistID],
       seedTracks: [songID],
-      seedGenres: [artistsResponse.genres![0]],
+      seedGenres: artistsResponse.genres?.isNotEmpty == true
+          ? [artistsResponse.genres![0]]
+          : defaultGenre,
     );
     tracks = recommendations.tracks;
 
@@ -71,7 +78,7 @@ class _DisplayResultsState extends State<DisplayResults> {
       albumType = song.album?.albumType;
       pictures = song.album?.images;
       artists = song.artists?.map((artist) => artist.name).toList();
-      genres = artistsResponse.genres;
+      genres = artistsResponse.genres ?? ['N/A'];
       isLoading = false;
     });
   }
@@ -152,7 +159,7 @@ class _DisplayResultsState extends State<DisplayResults> {
                     SizedBox(
                       width: getProportionateScreenWidth(280),
                       child: Text(
-                        "${artists!.length > 1 ? 'Artists' : 'Artist'}: ${artists!.join(', ')}",
+                        "${(artists?.length ?? 0) > 1 ? 'Artists' : 'Artist'}: ${artists?.join(', ')}",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
                           fontSize: 14,
@@ -201,39 +208,38 @@ class _DisplayResultsState extends State<DisplayResults> {
                         ),
                       ),
                     ),
+                    isPreview
+                        ? Column(
+                            children: [
+                              ElevatedButton(
+                                onPressed: togglePlay,
+                                child: Text(isPlaying ? "Pause" : "Play"),
+                              ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  await player.stop();
+                                  setState(() {
+                                    isPlaying = false;
+                                  });
+                                },
+                                child: Text("Stop"),
+                              ),
+                            ],
+                          )
+                        : SizedBox(),
                     ElevatedButton(
-                      onPressed: () async {
-                        if (isPlaying) {
-                          await player.pause();
-                        } else {
-                          await player.play();
-                        }
-                        setState(() {
-                          isPlaying = !isPlaying;
-                        });
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Recommendations(
+                              tracks: tracks,
+                            ),
+                          ),
+                        );
                       },
-                      child: Text(isPlaying ? "Pause" : "Play"),
+                      child: Text("View Recommendations"),
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        await player.stop();
-                        setState(() {
-                          isPlaying = false;
-                        });
-                      },
-                      child: Text("Stop"),
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Recommendations(
-                                      tracks: tracks,
-                                    )),
-                          );
-                        },
-                        child: Text("View Recommendations"))
                   ],
                 ),
         ),
