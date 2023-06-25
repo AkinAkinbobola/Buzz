@@ -1,6 +1,7 @@
 // ignore_for_file: library_prefixes
 
 import 'package:buzz/constant.dart';
+import 'package:buzz/recommendations.dart';
 import 'package:buzz/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,7 +19,7 @@ class DisplayResults extends StatefulWidget {
 class _DisplayResultsState extends State<DisplayResults> {
   final player = AudioPlayer();
   bool isLoading = false;
-  bool isPlaying = false; // Track playing state
+  bool isPlaying = false;
   String? songName;
   String? albumName;
   String? year;
@@ -27,6 +28,7 @@ class _DisplayResultsState extends State<DisplayResults> {
   List<SpotifyPack.Image>? pictures;
   List<String?>? artists;
   List<String?>? genres;
+  List<SpotifyPack.TrackSimple>? tracks;
 
   @override
   void initState() {
@@ -51,7 +53,15 @@ class _DisplayResultsState extends State<DisplayResults> {
     final song = await spotify.tracks.get(songID);
     final artistID = song.album?.artists?[0].id;
     final artistsResponse = await spotify.artists.get(artistID!);
-    final duration = await player.setUrl(song.previewUrl!);
+    await player.setUrl(song.previewUrl!);
+
+    SpotifyPack.Recommendations recommendations =
+        await spotify.recommendations.get(
+      seedArtists: [artistID],
+      seedTracks: [songID],
+      seedGenres: [artistsResponse.genres![0]],
+    );
+    tracks = recommendations.tracks;
 
     setState(() {
       songName = song.name;
@@ -92,6 +102,7 @@ class _DisplayResultsState extends State<DisplayResults> {
               ? const Center(
                   child: CircularProgressIndicator(
                     color: Colors.white,
+                    semanticsLabel: "Looks like we found your song!",
                   ),
                 )
               : Column(
@@ -191,9 +202,38 @@ class _DisplayResultsState extends State<DisplayResults> {
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: togglePlay,
-                      child: Text(isPlaying ? "Stop" : "Preview"),
+                      onPressed: () async {
+                        if (isPlaying) {
+                          await player.pause();
+                        } else {
+                          await player.play();
+                        }
+                        setState(() {
+                          isPlaying = !isPlaying;
+                        });
+                      },
+                      child: Text(isPlaying ? "Pause" : "Play"),
                     ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await player.stop();
+                        setState(() {
+                          isPlaying = false;
+                        });
+                      },
+                      child: Text("Stop"),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Recommendations(
+                                      tracks: tracks,
+                                    )),
+                          );
+                        },
+                        child: Text("View Recommendations"))
                   ],
                 ),
         ),
