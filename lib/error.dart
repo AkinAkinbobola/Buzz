@@ -1,5 +1,6 @@
 import 'package:buzz/buzz.dart';
 import 'package:buzz/constant.dart';
+import 'package:buzz/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,6 +15,10 @@ class _ErrorPageState extends State<ErrorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       backgroundColor: splashOrange,
       body: SizedBox(
         width: double.infinity,
@@ -28,8 +33,10 @@ class _ErrorPageState extends State<ErrorPage> {
                 )),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Buzz()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LandingPage()));
                 },
                 child: Text("Try Again"))
           ],

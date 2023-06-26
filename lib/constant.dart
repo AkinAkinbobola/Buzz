@@ -17,6 +17,10 @@ const kAccessSecret = 'roU98fiFDzlWEWntK4LR9ccmM3QAAf6ywoqu9J6D';
 const kClientId = 'bdeae17d554341acb8d42f860b0daddc';
 const kClientSecret = '1a04860b135048ebbb1e75b1d20ebed1';
 
+// Last FM
+const kApiKey = '4d650695b06505f01e2f037bac3402a6';
+const kSharedSecret = "4d650695b06505f01e2f037bac3402a6";
+
 // Snackbar
 /// Show Error SnackBar
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorSnackBar(

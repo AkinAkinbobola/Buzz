@@ -1,9 +1,10 @@
-// ignore_for_file: non_constant_identifier_names, await_only_futures
+// ignore_for_file: non_constant_identifier_names, await_only_futures, use_build_context_synchronously, duplicate_ignore
 
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:buzz/constant.dart';
+import 'package:buzz/error.dart';
 import 'package:buzz/models/ACRCloudModel.dart';
 import 'package:buzz/size_config.dart';
 import 'package:file_picker/file_picker.dart';
@@ -97,14 +98,21 @@ class _UploadState extends State<Upload> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => DisplayResults(
-                                      songID: spotify_id!,
-                                    )),
-                          );
+                              builder: (context) => DisplayResults(
+                                songID: spotify_id!,
+                              ),
+                            ),
+                          ).then((_) {
+                            setState(() {
+                              isLoading = false;
+                            });
+                          });
                         } catch (e) {
-                          if (kDebugMode) {
-                            print(e);
-                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ErrorPage()),
+                          );
                         }
                       }
                     },

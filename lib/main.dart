@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:buzz/artistInfo.dart';
 import 'package:buzz/constant.dart';
 import 'package:buzz/display_results.dart';
 import 'package:buzz/landing.dart';
@@ -51,7 +52,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: const LandingPage(),
+      home: const ArtistInfo(),
     );
   }
 }

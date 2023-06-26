@@ -19,7 +19,6 @@ class _LandingPageState extends State<LandingPage> {
   int selectedIndex = 0;
 
   final List<Widget> _pages = [
-    // const HomePage(),
     const Buzz(),
     const Upload(),
   ];
@@ -40,12 +39,6 @@ class _LandingPageState extends State<LandingPage> {
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
         items: <BottomNavigationBarItem>[
-          // BottomNavigationBarItem(
-          //   icon: SvgPicture.asset("assets/navbar_icons/for_you.svg"),
-          //   activeIcon:
-          //       SvgPicture.asset("assets/navbar_icons/for_you_active.svg"),
-          //   label: 'For You',
-          // ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/navbar_icons/buzz_icon.svg"),
             label: 'Buzz',

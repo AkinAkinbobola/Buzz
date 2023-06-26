@@ -54,7 +54,6 @@ dependencies:
   path_provider: ^2.0.15
   record: ^4.4.4
   record_mp3: ^3.0.0
-  dio: ^5.2.1+1
   shared_preferences: ^2.0.7
   intl: ^0.18.1
   file_picker: ^5.3.2
@@ -62,6 +61,9 @@ dependencies:
   just_audio: ^0.9.34
   youtube_player_flutter: ^8.1.2
   persistent_bottom_nav_bar: ^5.0.2
+  lastfm: ^0.0.5
+  xml: ^6.3.0
+
 
 dependency_overrides:
   http: '1.0.0'
