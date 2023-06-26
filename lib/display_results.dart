@@ -1,4 +1,4 @@
-import 'package:buzz/albumInfo.dart';
+import 'package:buzz/artistInfo.dart';
 import 'package:buzz/constant.dart';
 import 'package:buzz/recommendations.dart';
 import 'package:buzz/size_config.dart';
@@ -29,6 +29,7 @@ class _DisplayResultsState extends State<DisplayResults> {
   List<String?>? artists;
   List<String>? genres;
   List<SpotifyPack.TrackSimple>? tracks;
+  String? songArtist;
   final List<String> defaultGenre = ['pop'];
 
   @override
@@ -80,6 +81,7 @@ class _DisplayResultsState extends State<DisplayResults> {
       pictures = song.album?.images;
       artists = song.artists?.map((artist) => artist.name).toList();
       genres = artistsResponse.genres ?? ['N/A'];
+      songArtist = song.album!.artists![0].name;
       isLoading = false;
     });
   }
@@ -104,176 +106,179 @@ class _DisplayResultsState extends State<DisplayResults> {
         elevation: 0,
       ),
       backgroundColor: splashOrange,
-      body: SizedBox(
-        child: Center(
-          child: isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    semanticsLabel: "Looks like we found your song!",
-                  ),
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: getProportionateScreenHeight(300),
-                      width: getProportionateScreenWidth(300),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(150),
-                        border: Border.all(
-                            width: 20, color: darkOrange.withOpacity(0.5)),
-                      ),
-                      child: Container(
+      body: SingleChildScrollView(
+        child: SizedBox(
+          child: Center(
+            child: isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      semanticsLabel: "Looks like we found your song!",
+                    ),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: getProportionateScreenHeight(300),
+                        width: getProportionateScreenWidth(300),
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                pictures![0].url!,
-                              )),
                           borderRadius: BorderRadius.circular(150),
+                          border: Border.all(
+                              width: 20, color: darkOrange.withOpacity(0.5)),
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  pictures![0].url!,
+                                )),
+                            borderRadius: BorderRadius.circular(150),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenHeight(50),
-                    ),
-                    Text(
-                      "Song Recognized!",
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
+                      SizedBox(
+                        height: getProportionateScreenHeight(50),
                       ),
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenHeight(10),
-                    ),
-                    Text(
-                      "Song: $songName",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                      Text(
+                        "Song Recognized!",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenHeight(4),
-                    ),
-                    SizedBox(
-                      width: getProportionateScreenWidth(280),
-                    ),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      children: List.generate(
-                        artists!.length + 1,
-                        (index) {
-                          return Padding(
-                            padding: EdgeInsets.only(
-                                right: getProportionateScreenWidth(4)),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const AlbumInfo()),
-                                );
-                              },
-                              child: index == 0
-                                  ? Text(
-                                      "${(artists?.length ?? 0) > 1 ? 'Artists' : 'Artist'}:",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
+                      SizedBox(
+                        height: getProportionateScreenHeight(10),
+                      ),
+                      Text(
+                        "Song: $songName",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(4),
+                      ),
+                      SizedBox(
+                        width: getProportionateScreenWidth(280),
+                      ),
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        children: List.generate(
+                          artists!.length + 1,
+                          (index) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  right: getProportionateScreenWidth(4)),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ArtistInfo(
+                                            artistName: songArtist!)),
+                                  );
+                                },
+                                child: index == 0
+                                    ? Text(
+                                        "${(artists?.length ?? 0) > 1 ? 'Artists' : 'Artist'}:",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    : Text(
+                                        artists![index - 1]!,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    )
-                                  : Text(
-                                      artists![index - 1]!,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(4),
+                      ),
+                      SizedBox(
+                        width: getProportionateScreenWidth(280),
+                        child: Text(
+                          "Track $trackNumber on $albumName",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(4),
+                      ),
+                      SizedBox(
+                        child: Text(
+                          "Release Year: $year",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(4),
+                      ),
+                      SizedBox(
+                        width: getProportionateScreenWidth(280),
+                        child: Text(
+                          "Genres: ${genres?.join(', ') ?? 'N/A'}",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      isPreview
+                          ? Column(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: togglePlay,
+                                  child: Text(isPlaying ? "Pause" : "Play"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    await player.stop();
+                                    setState(() {
+                                      isPlaying = false;
+                                    });
+                                  },
+                                  child: const Text("Stop"),
+                                ),
+                              ],
+                            )
+                          : const SizedBox(),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Recommendations(
+                                tracks: tracks,
+                              ),
                             ),
                           );
                         },
+                        child: const Text("View Recommendations"),
                       ),
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenHeight(4),
-                    ),
-                    SizedBox(
-                      width: getProportionateScreenWidth(280),
-                      child: Text(
-                        "Track $trackNumber on $albumName",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenHeight(4),
-                    ),
-                    SizedBox(
-                      child: Text(
-                        "Release Year: $year",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenHeight(4),
-                    ),
-                    SizedBox(
-                      width: getProportionateScreenWidth(280),
-                      child: Text(
-                        "Genres: ${genres?.join(', ') ?? 'N/A'}",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    isPreview
-                        ? Column(
-                            children: [
-                              ElevatedButton(
-                                onPressed: togglePlay,
-                                child: Text(isPlaying ? "Pause" : "Play"),
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  await player.stop();
-                                  setState(() {
-                                    isPlaying = false;
-                                  });
-                                },
-                                child: const Text("Stop"),
-                              ),
-                            ],
-                          )
-                        : const SizedBox(),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Recommendations(
-                              tracks: tracks,
-                            ),
-                          ),
-                        );
-                      },
-                      child: const Text("View Recommendations"),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+          ),
         ),
       ),
     );

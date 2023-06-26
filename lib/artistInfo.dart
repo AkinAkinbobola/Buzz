@@ -4,7 +4,9 @@ import 'package:lastfm/lastfm.dart';
 import 'package:xml/xml.dart';
 
 class ArtistInfo extends StatefulWidget {
-  const ArtistInfo({Key? key}) : super(key: key);
+  final String artistName;
+
+  const ArtistInfo({Key? key, required this.artistName}) : super(key: key);
 
   @override
   State<ArtistInfo> createState() => _ArtistInfoState();
@@ -24,15 +26,13 @@ class _ArtistInfoState extends State<ArtistInfo> {
 
   Future<void> getArtistInfo() async {
     final XmlDocument document =
-        await lastfm.read('artist.getInfo', {"artist": "Pink Floyd"});
+        await lastfm.read('artist.getInfo', {"artist": widget.artistName});
     final XmlElement bioElement = document.findAllElements('bio').first;
     setState(() {
       content = bioElement.findElements('content').single.innerText;
       summary = bioElement.findElements('summary').single.innerText;
     });
 
-    // Print the content and summary
-    // print('Content: $content');
     print('Summary: $summary');
   }
 
@@ -43,7 +43,7 @@ class _ArtistInfoState extends State<ArtistInfo> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Text("$content"),
+            Text("$content"),
             Text("$summary"),
           ],
         ),

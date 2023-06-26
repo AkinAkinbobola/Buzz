@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: const ArtistInfo(),
+      home: const LandingPage(),
     );
   }
 }

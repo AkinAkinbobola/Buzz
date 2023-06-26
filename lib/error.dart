@@ -1,4 +1,3 @@
-import 'package:buzz/buzz.dart';
 import 'package:buzz/constant.dart';
 import 'package:buzz/landing.dart';
 import 'package:flutter/material.dart';
