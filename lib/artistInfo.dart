@@ -1,6 +1,8 @@
 import 'package:buzz/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lastfm/lastfm.dart';
+import 'package:spotify/spotify.dart';
 import 'package:xml/xml.dart';
 
 class ArtistInfo extends StatefulWidget {
@@ -32,19 +34,44 @@ class _ArtistInfoState extends State<ArtistInfo> {
       content = bioElement.findElements('content').single.innerText;
       summary = bioElement.findElements('summary').single.innerText;
     });
-
-    print('Summary: $summary');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: splashOrange,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("$content"),
-            Text("$summary"),
+            Text(
+              "Artist Information",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 16),
+            if (content != null)
+              Text(
+                "Biography:",
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            if (content != null)
+              Text(
+                content!,
+                style: GoogleFonts.poppins(
+                    fontSize: 16, fontWeight: FontWeight.w500),
+              ),
           ],
         ),
       ),

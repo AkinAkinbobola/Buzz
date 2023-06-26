@@ -2,6 +2,7 @@
 
 import 'package:buzz/buzz.dart';
 import 'package:buzz/constant.dart';
+import 'package:buzz/explore.dart';
 import 'package:buzz/size_config.dart';
 import 'package:buzz/upload.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class _LandingPageState extends State<LandingPage> {
   int selectedIndex = 0;
 
   final List<Widget> _pages = [
+    // const Explore(),
     const Buzz(),
     const Upload(),
   ];
@@ -39,6 +41,10 @@ class _LandingPageState extends State<LandingPage> {
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
         items: <BottomNavigationBarItem>[
+          // const BottomNavigationBarItem(
+          //   icon: Icon(IconData(0xe248, fontFamily: 'MaterialIcons')),
+          //   label: 'Explore',
+          // ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/navbar_icons/buzz_icon.svg"),
             label: 'Buzz',

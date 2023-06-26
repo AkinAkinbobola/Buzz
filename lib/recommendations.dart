@@ -14,6 +14,11 @@ class Recommendations extends StatefulWidget {
 
 class _RecommendationsState extends State<Recommendations> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -22,28 +27,38 @@ class _RecommendationsState extends State<Recommendations> {
         elevation: 0,
       ),
       backgroundColor: splashOrange,
-      body: Center(
-        child: ListView.builder(
-          itemCount: widget.tracks?.length ?? 0,
-          itemBuilder: (context, index) {
-            final track = widget.tracks![index];
-            return ListTile(
-              title: Text(
-                track.name ?? '',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              subtitle: Text(
-                track.artists?.map((artist) => artist.name).join(', ') ?? '',
-                style: GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            );
-          },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () async {},
+              child: Text("Save to Playlist"),
+            ),
+            Column(
+              children: widget.tracks?.map((track) {
+                    return ListTile(
+                      title: Text(
+                        track.name ?? '',
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      subtitle: Text(
+                        track.artists
+                                ?.map((artist) => artist.name)
+                                .join(', ') ??
+                            '',
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    );
+                  }).toList() ??
+                  [],
+            ),
+          ],
         ),
       ),
     );

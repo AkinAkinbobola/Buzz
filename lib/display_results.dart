@@ -31,6 +31,7 @@ class _DisplayResultsState extends State<DisplayResults> {
   List<SpotifyPack.TrackSimple>? tracks;
   String? songArtist;
   final List<String> defaultGenre = ['pop'];
+  SpotifyPack.Pages<SpotifyPack.Album>? albums;
 
   @override
   void initState() {
@@ -55,6 +56,12 @@ class _DisplayResultsState extends State<DisplayResults> {
     final song = await spotify.tracks.get(songID);
     final artistID = song.album?.artists?[0].id;
     final artistsResponse = await spotify.artists.get(artistID!);
+
+    // For artists
+    //albums = await spotify.artists.albums(artistID);
+    //final topTracks = await spotify.artists.getTopTracks(artistID, "NG");
+    //final relatedArtists = await spotify.artists.relatedArtists(artistID);
+
     if (song.previewUrl != null) {
       await player.setUrl(song.previewUrl!);
     } else {
@@ -179,8 +186,10 @@ class _DisplayResultsState extends State<DisplayResults> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => ArtistInfo(
-                                            artistName: songArtist!)),
+                                      builder: (context) => ArtistInfo(
+                                        artistName: songArtist!,
+                                      ),
+                                    ),
                                   );
                                 },
                                 child: index == 0
@@ -189,6 +198,9 @@ class _DisplayResultsState extends State<DisplayResults> {
                                         style: GoogleFonts.poppins(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
+                                          decoration:
+                                              TextDecoration.underline,
+                                          color: Colors.blue,
                                         ),
                                       )
                                     : Text(
@@ -196,6 +208,9 @@ class _DisplayResultsState extends State<DisplayResults> {
                                         style: GoogleFonts.poppins(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
+                                          decoration:
+                                              TextDecoration.underline,
+                                          color: Colors.blue,
                                         ),
                                       ),
                               ),
